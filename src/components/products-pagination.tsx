@@ -9,9 +9,10 @@ interface IPaginationProps {
   // eslint-disable-next-line no-unused-vars
   setPage: (page: number) => void;
   pageCount: number;
+  page: number;
 }
 
-export default function ProductsPagination({ setPage, pageCount }: IPaginationProps) {
+export default function ProductsPagination({ setPage, pageCount, page }: IPaginationProps) {
   const handleChange = (_event: React.ChangeEvent<unknown>, value: number) => {
     setPage(value);
   };
@@ -36,6 +37,7 @@ export default function ProductsPagination({ setPage, pageCount }: IPaginationPr
           },
         }}
         count={pageCount}
+        page={page}
         shape="rounded"
         color="primary"
         boundaryCount={2}
