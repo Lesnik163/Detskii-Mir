@@ -8,6 +8,7 @@ import StarEmptyIcon from '../../public/StarEmptyIcon.svg';
 
 export default function ProductCardItem(props: { product: IProduct}) {
   const { product } = props;
+
   return (
     <Link href={`/products/${product.id}`} style={{ textDecoration: 'unset' }}>
       <Card

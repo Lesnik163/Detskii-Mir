@@ -1,41 +1,15 @@
 'use client';
 
 import * as React from 'react';
-import Popover from '@mui/material/Popover';
-import Typography from '@mui/material/Typography';
-import Button from '@mui/material/Button';
-import Cart from '../components/cart';
+import MainProducts from '@/components/main-products';
+import { Box } from '@mui/material';
+import Header from '../components/header';
 
-export default function BasicPopover() {
-  const [anchorEl, setAnchorEl] = React.useState<HTMLButtonElement | null>(null);
-
-  const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
-    setAnchorEl(event.currentTarget);
-  };
-  const handleClose = () => {
-    setAnchorEl(null);
-  };
-
-  const open = Boolean(anchorEl);
-  const id = open ? 'simple-popover' : undefined;
-
+export default function GoodsPage() {
   return (
-    <div>
-      <Button aria-describedby={id} variant="text" onClick={handleClick}>
-        <Cart />
-      </Button>
-      <Popover
-        id={id}
-        open={open}
-        anchorEl={anchorEl}
-        onClose={handleClose}
-        anchorOrigin={{
-          vertical: 'bottom',
-          horizontal: 'left',
-        }}
-      >
-        <Typography sx={{ p: 2 }}>The content of the Popover.</Typography>
-      </Popover>
-    </div>
+    <Box bgcolor="background.default">
+      <Header />
+      <MainProducts />
+    </Box>
   );
 }

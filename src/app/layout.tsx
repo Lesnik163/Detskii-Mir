@@ -4,6 +4,7 @@ import React from 'react';
 import { Metadata } from 'next';
 import { IChildren } from '@/interfaces/childrenInterface';
 import ThemeProvider from '@/themes/mui-theme-provider';
+// import theme from '@/themes/light-theme';
 import Providers from './redux/provider';
 
 export const metadata: Metadata = {

@@ -21,11 +21,15 @@ export default function ProductsPagination({ setPage, pageCount }: IPaginationPr
       <Pagination
         sx={{
           '&  .MuiPaginationItem-root': {
-            color: '#0073E6',
+            color: 'warning.main',
             fontWeight: '700',
           },
-          '&  .MuiPaginationItem-root[aria-current]': {
+          '&  .MuiPaginationItem-root:hover': {
+            bgcolor: 'secondary.main',
+          },
+          '&  .MuiPaginationItem-root[aria-current="true"]': {
             color: '#FFFFFF',
+            bgcolor: 'warning.main',
           },
           '&  .MuiPagination-ul': {
             justifyContent: 'center',

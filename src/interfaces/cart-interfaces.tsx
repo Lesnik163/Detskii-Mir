@@ -1,0 +1,9 @@
+import { IProduct } from './product-interface';
+
+export interface ICartItem {
+  product: Pick<IProduct, 'id' | 'title' | 'picture' | 'price'>
+  quantity: number,
+}
+export interface ICart {
+  items: Array<ICartItem>
+}

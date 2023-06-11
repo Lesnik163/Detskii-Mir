@@ -10,9 +10,28 @@ export const nunito = Nunito({
   display: 'swap',
   fallback: ['Helvetica', 'Arial', 'sans-serif'],
 });
+
 const theme = createTheme({
   typography: {
     fontFamily: nunito.style.fontFamily,
+  },
+  palette: {
+    mode: 'light',
+    primary: {
+      main: '#E6F1FC',
+    },
+    secondary: {
+      main: '#99C7F5',
+    },
+    warning: {
+      main: '#0073E6',
+    },
+    error: {
+      main: '#F2F6FA',
+    },
+    background: {
+      default: '#F2F6FA',
+    },
   },
   components: {
     MuiPaginationItem: {
@@ -30,11 +49,6 @@ const theme = createTheme({
           },
         },
       },
-    },
-  },
-  palette: {
-    primary: {
-      main: '#0073E6',
     },
   },
 });

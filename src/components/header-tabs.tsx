@@ -1,36 +1,77 @@
 'use client';
 
-import * as React from 'react';
-import Tabs from '@mui/material/Tabs';
-import Tab from '@mui/material/Tab';
-import Box from '@mui/material/Box';
+import React from 'react';
+import {
+  Box, Tab, Tabs,
+} from '@mui/material';
+import Link from 'next/link';
+import { usePathname } from 'next/navigation';
+
+const tabsPath: Record<string, number> = {
+  '/': 1,
+  '/orders': 2,
+};
 
 export default function HeaderTabs() {
-  const [value, setValue] = React.useState(0);
-  const handleChange = (event: React.SyntheticEvent, newValue: number) => {
-    setValue(newValue);
+  const pathName = usePathname();
+  const [value, setValue] = React.useState(tabsPath[pathName] ?? 1);
+
+  const handleChange = () => {
+    const newValue = tabsPath[pathName];
+    if (newValue !== undefined) {
+      setValue(newValue);
+    }
   };
+
   return (
-    <Box sx={{
-      alignSelf: 'center',
-    }}
+    <Box
+      // position="fixed"
+      display="flex"
+      justifyContent="center"
+      boxSizing="border-box"
+      width="100%"
+      height="48px"
+      px="32px"
+      bgcolor="error.main"
+      borderBottom="1px solid #E6F1FC"
+      top={0}
+      left={0}
+      // zIndex={1000}
     >
-      <Tabs
-        sx={{
-          '& .MuiButtonBase-root': {
+      <Tabs value={value} onChange={handleChange} centered TabIndicatorProps={{ sx: { backgroundColor: 'warning.main', height: '3px' } }}>
+        <Tab
+          value={1}
+          sx={{
             textTransform: 'none',
+            fontWeight: 700,
             fontSize: '16px',
-            px: '0px',
-            minWidth: '55px',
-            mr: '16px',
-          },
-        }}
-        onChange={handleChange}
-        value={value}
-        centered
-      >
-        <Tab label="Товары" />
-        <Tab label="Заказы" />
+            color: 'text.primary',
+            '&.Mui-selected': {
+              color: 'warning.main',
+            },
+          }}
+          label={(
+            <Link href="/" style={{ textDecoration: 'unset', color: 'unset' }}>
+              Товары
+            </Link>
+          )}
+        />
+        <Tab
+          value={2}
+          sx={{
+            textTransform: 'none',
+            fontWeight: 700,
+            color: 'text.primary',
+            '&.Mui-selected': {
+              color: 'warning.main',
+            },
+          }}
+          label={(
+            <Link href="/orders" style={{ textDecoration: 'unset', color: 'unset' }}>
+              Заказы
+            </Link>
+          )}
+        />
       </Tabs>
     </Box>
   );
