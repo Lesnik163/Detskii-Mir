@@ -6,9 +6,8 @@ import Link from 'next/link';
 import StarIcon from '../../public/StarIcon.svg';
 import StarEmptyIcon from '../../public/StarEmptyIcon.svg';
 
-export default function ProductCardItem(props: { product: IProduct}) {
+export default function ProductCardI(props: { product: IProduct }) {
   const { product } = props;
-
   return (
     <Link href={`/products/${product.id}`} style={{ textDecoration: 'unset' }}>
       <Card
@@ -18,7 +17,6 @@ export default function ProductCardItem(props: { product: IProduct}) {
           minHeight: 80,
           width: 250,
           borderRadius: '16px',
-          border: '2px solid #FFFFFF',
           pb: 4,
           height: '100%',
         }}

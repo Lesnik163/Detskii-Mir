@@ -38,13 +38,12 @@ export default function HeaderTabs() {
       left={0}
       // zIndex={1000}
     >
-      <Tabs value={value} onChange={handleChange} centered TabIndicatorProps={{ sx: { backgroundColor: 'warning.main', height: '3px' } }}>
+      <Tabs value={value} onChange={handleChange} centered>
         <Tab
           value={1}
           sx={{
             textTransform: 'none',
             fontWeight: 700,
-            fontSize: '16px',
             color: 'text.primary',
             '&.Mui-selected': {
               color: 'warning.main',
@@ -63,7 +62,7 @@ export default function HeaderTabs() {
             fontWeight: 700,
             color: 'text.primary',
             '&.Mui-selected': {
-              color: 'warning.main',
+              color: 'primary.main',
             },
           }}
           label={(
