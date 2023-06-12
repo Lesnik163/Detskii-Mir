@@ -1,3 +1,5 @@
+'use client';
+
 import { useState } from 'react';
 import { useGetProductsQuery } from '@/app/redux/services/product-service';
 import { Box } from '@mui/material';

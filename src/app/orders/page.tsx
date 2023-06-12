@@ -3,7 +3,7 @@
 import Header from '@/components/header';
 import { Box } from '@mui/material';
 
-export default function Example() {
+export default function Orders() {
   return (
     <Box bgcolor="background.default">
       <Header />
