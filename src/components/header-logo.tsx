@@ -14,7 +14,7 @@ export default function HeaderLogo() {
       },
     }}
     >
-      <Image src="/Logo.svg" width={150} height={15} alt="Blue Cube" />
+      <Image src="/Logo.svg" width={150} height={15} alt="Blue Cube" priority />
     </Box>
   );
 }

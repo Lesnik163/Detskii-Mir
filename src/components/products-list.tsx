@@ -23,7 +23,7 @@ export default function ProductsList() {
   const productList = data?.data;
   const pageCount = data?.meta?.total ? Math.ceil(data.meta.total / limit) : 0;
   return (
-    <Box sx={{ pt: '24px', pb: '40px' }}>
+    <Box sx={{ pb: '40px' }}>
       <Box display="flex" gap={2} p={4} flexWrap="wrap" justifyContent="center">
         {productList ? productList.map((card) => (
           <ProductCardItem key={card.id} product={card} />

@@ -11,6 +11,7 @@ export default function Header() {
     <Box sx={{
       display: 'grid',
       alignItems: 'center',
+      mb: '24px',
       gridAutoFlow: 'row',
       gridTemplateColumns: 'repeat(3, 1fr)',
       gridTemplateRows: '48px',
