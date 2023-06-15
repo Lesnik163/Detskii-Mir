@@ -9,14 +9,14 @@ import {
   Divider,
   List, ListItem, ListItemButton, ListItemIcon, ListItemText, Stack,
 } from '@mui/material';
-import cartsMock from '@/mockData/cartMock';
 import Image from 'next/image';
 import ButtonCounter from '@/components/buttonCounter';
+import { useAppSelector } from '@/app/redux/hooks';
 import Cart from './cart';
 
 export default function BasicPopover() {
   const [anchorEl, setAnchorEl] = React.useState<HTMLButtonElement | null>(null);
-
+  const cartList = useAppSelector((state) => state.counterReducer.cartList);
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
     setAnchorEl(event.currentTarget);
   };
@@ -26,7 +26,9 @@ export default function BasicPopover() {
 
   const open = Boolean(anchorEl);
   const id = open ? 'simple-popover' : undefined;
-
+  //
+  const fullCost = cartList.map((item) => item.product.price * item.quantity)
+    .reduce((accumulator, currValue) => accumulator + currValue);
   return (
     <Box
       sx={{
@@ -59,18 +61,18 @@ export default function BasicPopover() {
         }}
       >
         <List>
-          {cartsMock.map((order) => (
+          {cartList.map((order) => (
             <React.Fragment key={order.product.id}>
               <ListItem disablePadding button divider>
                 <ListItemButton>
                   <ListItemIcon>
-                    <Image src={order.product.picture} width={52} height={52} alt="good-img" />
+                    <Image src={order.product.picture} width={52} height={52} alt="good-img" placeholder="blur" blurDataURL={order.product.picture} />
                   </ListItemIcon>
                   <ListItemText primary={order.product.title} />
                 </ListItemButton>
-                <ButtonCounter />
+                <ButtonCounter order={order} />
                 <Typography variant="h5" component="div" fontWeight={800} fontSize={20}>
-                  { order.product.price }
+                  { order.product.price * order.quantity }
                   &nbsp;₽
                 </Typography>
               </ListItem>
@@ -82,7 +84,7 @@ export default function BasicPopover() {
               Итого
             </Typography>
             <Typography variant="h5" component="div" fontWeight={800} fontSize={20}>
-              8400
+              {fullCost}
               &nbsp;₽
             </Typography>
           </Stack>

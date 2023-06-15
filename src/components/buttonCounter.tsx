@@ -1,15 +1,23 @@
 import * as React from 'react';
 import Button from '@mui/material/Button';
 import ButtonGroup from '@mui/material/ButtonGroup';
-// import Image from 'next/image';
-// import WhiteMinus from '../../public/whiteMinus.svg';
-// import BlueMinus from '../../public/blueMinus.svg';
+import { useAppDispatch } from '@/app/redux/hooks';
+import { increment, decrement } from '@/app/redux/features/counterSlice';
+import { ICartItem } from '@/interfaces/cart-interfaces';
 
-export default function ButtonCounter() {
+type ButtonCounterProps = {order: ICartItem}
+export default function ButtonCounter(props: ButtonCounterProps) {
+  const { order } = props;
+  const dispatch = useAppDispatch();
+  const decrease = ():void => {
+    if (order.quantity > 1) {
+      dispatch(decrement(order.product.id));
+    }
+  };
   const buttons = [
-    <Button key="one">-</Button>,
-    <Button key="two" disabled>2</Button>,
-    <Button key="three">+</Button>,
+    <Button onClick={() => dispatch(decrease)} key="one">-</Button>,
+    <Button key="two" disabled>{order.quantity}</Button>,
+    <Button onClick={() => dispatch(increment(order.product.id))} key="three">+</Button>,
   ];
 
   return (

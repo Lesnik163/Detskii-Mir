@@ -1,9 +1,11 @@
 import { configureStore } from '@reduxjs/toolkit';
 import { setupListeners } from '@reduxjs/toolkit/dist/query';
 import { productApi } from './services/product-service';
+import counterReducer from './features/counterSlice';
 
 export const store = configureStore({
   reducer: {
+    counterReducer,
     [productApi.reducerPath]: productApi.reducer,
   },
   devTools: process.env.NODE_ENV !== 'production',
