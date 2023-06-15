@@ -7,7 +7,7 @@ import Button from '@mui/material/Button';
 import {
   Box,
   Divider,
-  List, ListItem, ListItemButton, ListItemIcon, ListItemText, Stack,
+  List, ListItemAvatar, ListItemText, Stack,
 } from '@mui/material';
 import Image from 'next/image';
 import ButtonCounter from '@/components/buttonCounter';
@@ -35,17 +35,20 @@ export default function BasicPopover() {
         justifySelf: 'end',
       }}
     >
-      <Button
-        aria-describedby={id}
-        variant="text"
+      <Typography
+        sx={{ cursor: 'pointer' }}
         onClick={handleClick}
       >
         <Cart />
-      </Button>
+      </Typography>
       <Popover
         id={id}
         open={open}
         anchorEl={anchorEl}
+        anchorOrigin={{
+          vertical: 'bottom',
+          horizontal: 'left',
+        }}
         onClose={handleClose}
         sx={{
           '& .MuiPopover-paper': {
@@ -55,27 +58,21 @@ export default function BasicPopover() {
           },
           backgroundColor: 'secondary',
         }}
-        anchorOrigin={{
-          vertical: 'bottom',
-          horizontal: 'left',
-        }}
       >
         <List>
           {cartList.map((order) => (
             <React.Fragment key={order.product.id}>
-              <ListItem disablePadding button divider>
-                <ListItemButton>
-                  <ListItemIcon>
-                    <Image src={order.product.picture} width={52} height={52} alt="good-img" placeholder="blur" blurDataURL={order.product.picture} />
-                  </ListItemIcon>
-                  <ListItemText primary={order.product.title} />
-                </ListItemButton>
+              <Box display="flex" alignItems="center" height="52px" py={5}>
+                <ListItemAvatar sx={{ minWidth: 'unset', pr: '10px' }}>
+                  <Image src={order.product.picture} width={52} height={52} alt="good-img" placeholder="blur" blurDataURL={order.product.picture} />
+                </ListItemAvatar>
+                <ListItemText primary={order.product.title} />
                 <ButtonCounter order={order} />
-                <Typography variant="h5" component="div" fontWeight={800} fontSize={20}>
+                <Typography variant="h5" component="div" fontWeight={800} fontSize={20} width={100} textAlign="center">
                   { order.product.price * order.quantity }
                   &nbsp;₽
                 </Typography>
-              </ListItem>
+              </Box>
               <Divider sx={{ mx: 2 }} />
             </React.Fragment>
           ))}

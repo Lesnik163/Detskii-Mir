@@ -10,7 +10,7 @@ export default function ButtonCounter(props: ButtonCounterProps) {
   const { order } = props;
   const dispatch = useAppDispatch();
   const decrease = ():void => {
-    if (order.quantity > 1) {
+    if (order.quantity >= 1) {
       dispatch(decrement(order.product.id));
     }
   };
