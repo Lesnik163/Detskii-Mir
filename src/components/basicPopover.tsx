@@ -35,12 +35,12 @@ export default function BasicPopover() {
         justifySelf: 'end',
       }}
     >
-      <Typography
+      <Button
         sx={{ cursor: 'pointer' }}
         onClick={handleClick}
       >
         <Cart />
-      </Typography>
+      </Button>
       <Popover
         id={id}
         open={open}
