@@ -6,7 +6,7 @@ export default function ProductDetails({ description }: { description: string })
       elevation={0}
       sx={{
         mx: 'auto',
-        width: '60%',
+        // width: '60%',
         maxWidth: '792px',
         borderRadius: '16px',
       }}

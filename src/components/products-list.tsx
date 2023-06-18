@@ -9,16 +9,14 @@ import ProductCardItem from './products-list-item';
 
 export default function ProductsList() {
   const params = useSearchParams();
-
   const [page, setPage] = useState(Number(params.get('page')) || 1);
-  const limit = 15;
+  const limit = 20;
   const router = useRouter();
   const pathname = usePathname();
   const handlePagination = (pageNumber: number) => {
     router.replace(`${pathname}?page=${pageNumber}&limit=${limit}`);
     setPage(pageNumber);
   };
-
   const { data } = useGetProductsQuery({ page, limit });
   const productList = data?.data;
   const pageCount = data?.meta?.total ? Math.ceil(data.meta.total / limit) : 0;
@@ -26,7 +24,7 @@ export default function ProductsList() {
     <Box sx={{ pb: '40px' }}>
       <Box display="flex" gap={2} p={4} flexWrap="wrap" justifyContent="center">
         {productList ? productList.map((card) => (
-          <ProductCardItem key={card.id} product={card} />
+          <ProductCardItem key={card.id} product={card} page={page} />
         )) : null}
       </Box>
       <Box justifyContent="center" display="flex">

@@ -14,11 +14,12 @@ export const productApi = createApi({
         url: 'products',
         params,
       }),
-      serializeQueryArgs: ({ endpointName }) => endpointName,
-      merge(currentCacheData, responseData) {
-        currentCacheData.data.push(...responseData.data);
-      },
-      forceRefetch: ({ currentArg, previousArg }) => currentArg !== previousArg,
+      // serializeQueryArgs: ({ endpointName }) => endpointName,
+      // merge(currentCacheData, responseData) {
+      //   currentCacheData.data.push(...responseData.data);
+      // },
+      // forceRefetch: ({ currentArg, previousArg }) => currentArg !== previousArg,
+      // Закомментированный код выше для infinityScroll
     }),
     getProductById: builder.query<IProduct, string>({
       query: (id) => `products/${id}`,

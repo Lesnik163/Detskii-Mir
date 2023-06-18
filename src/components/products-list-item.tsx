@@ -6,11 +6,11 @@ import Link from 'next/link';
 import StarIcon from '../../public/StarIcon.svg';
 import StarEmptyIcon from '../../public/StarEmptyIcon.svg';
 
-export default function ProductCardItem(props: { product: IProduct}) {
-  const { product } = props;
+export default function ProductCardItem(props: { product: IProduct, page: number}) {
+  const { product, page } = props;
 
   return (
-    <Link href={`/products/${product.id}`} style={{ textDecoration: 'unset' }}>
+    <Link href={`/products/${product.id}?page=${page}&limit=20`} style={{ textDecoration: 'unset' }}>
       <Card
         elevation={0}
         sx={{
