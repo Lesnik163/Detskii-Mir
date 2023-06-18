@@ -3,7 +3,7 @@ import {
 } from '@mui/material';
 import { useState } from 'react';
 import { IProduct } from '@/interfaces/product-interface';
-import { cartApi, useUpdateCartMutation } from '@/app/redux/services/cart-service';
+import { cartApi } from '@/app/redux/services/cart-service';
 import { ICartUpd } from '@/interfaces/cart-interfaces';
 import StarIcon from '../../public/StarIcon.svg';
 import StarEmptyIcon from '../../public/StarEmptyIcon.svg';
@@ -12,7 +12,7 @@ import ReturnIcon from '../../public/Return.svg';
 
 export default function ProductDetails({ product }: { product: IProduct }) {
   const [isAddedToCart, setAddedToCart] = useState(false);
-  const [createCart, {isLoading, isError, isSuccess}] = cartApi.useUpdateCartMutation();
+  const [createCart] = cartApi.useUpdateCartMutation();
 
   const changeBtnAndUpdateCart = async () => {
     setAddedToCart(!isAddedToCart);
