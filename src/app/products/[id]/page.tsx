@@ -8,6 +8,7 @@ import ProductDescription from '@/components/product-description';
 import { useGetProductByIdQuery, useGetProductsQuery } from '@/app/redux/services/product-service';
 import Header from '@/components/header';
 import { IProduct } from '@/interfaces/product-interface';
+import Variants from '@/components/isLoadingForCard';
 import ProductDetails from '../../../components/product-details';
 import ArrowLeftIcon from '../../../../public/Arrow-left.svg';
 
@@ -18,10 +19,10 @@ export default function ProductPage() {
   const searchParams = useSearchParams();
   const page = Number(searchParams.get('page'));
   const currObj = useGetProductsQuery({ page, limit });
-  const { data } = useGetProductByIdQuery(params.id);
-  if (!data) {
-    return null;
-  }
+  const { data, error, isLoading } = useGetProductByIdQuery(params.id);
+  // if (!data) {
+  //   return null;
+  // }
   const currentPageArr = currObj?.data?.data;
   const findPrevGoodId = (goodsArr: Array<IProduct>, id: string): string => {
     const currentCardInd = goodsArr.findIndex((card) => card.id === id);
@@ -53,6 +54,7 @@ export default function ProductPage() {
         >
           Предыдущий
         </Button>
+
         <Stack direction="column" gap={2} width="57%">
           <Button
             startIcon={<ArrowLeftIcon />}
@@ -68,8 +70,14 @@ export default function ProductPage() {
           >
             Назад
           </Button>
-          <ProductDetails product={data} />
-          <ProductDescription description={data.description} />
+          {isLoading && <Variants />}
+          {error && <h1>Some has gone wrong...</h1> }
+          {data && (
+          <>
+            <ProductDetails product={data} />
+            <ProductDescription description={data.description} />
+          </>
+          )}
         </Stack>
         <Button
           variant="contained"

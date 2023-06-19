@@ -12,7 +12,9 @@ import StarEmptyIcon from '../../public/StarEmptyIcon.svg';
 import ReturnIcon from '../../public/Return.svg';
 import ProductDetailsButtonCounter from './product-details-button-counter';
 
-export default function ProductDetails({ product }: { product: IProduct }) {
+export default function ProductDetails(
+  { product }: { product: IProduct },
+) {
   const [isAddedToCart, setAddedToCart] = useState(false);
   const [createCart] = cartApi.useUpdateCartMutation();
   const params = useParams();

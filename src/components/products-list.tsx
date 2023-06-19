@@ -6,7 +6,25 @@ import { Box } from '@mui/material';
 import { useRouter, usePathname, useSearchParams } from 'next/navigation';
 import ProductsPagination from './products-pagination';
 import ProductCardItem from './products-list-item';
+import Variants from './isLoadingForCards';
 
+const loadingCards = [
+  <Variants key={1} />,
+  <Variants key={1} />,
+  <Variants key={1} />,
+  <Variants key={1} />,
+  <Variants key={1} />,
+  <Variants key={1} />,
+  <Variants key={1} />,
+  <Variants key={1} />,
+  <Variants key={1} />,
+  <Variants key={1} />,
+  <Variants key={1} />,
+  <Variants key={1} />,
+  <Variants key={1} />,
+  <Variants key={1} />,
+  <Variants key={1} />,
+];
 export default function ProductsList() {
   const params = useSearchParams();
   const [page, setPage] = useState(Number(params.get('page')) || 1);
@@ -17,12 +35,25 @@ export default function ProductsList() {
     router.replace(`${pathname}?page=${pageNumber}&limit=${limit}`);
     setPage(pageNumber);
   };
-  const { data } = useGetProductsQuery({ page, limit });
+  const { data, error, isLoading } = useGetProductsQuery({ page, limit });
   const productList = data?.data;
   const pageCount = data?.meta?.total ? Math.ceil(data.meta.total / limit) : 0;
   return (
     <Box sx={{ pb: '40px' }}>
       <Box display="flex" gap={2} p={4} flexWrap="wrap" justifyContent="center">
+        {isLoading
+        && (
+        <Box
+          display="flex"
+          flexDirection="row"
+          flexWrap="wrap"
+          justifyContent="space-between"
+          mx="auto"
+        >
+          {loadingCards}
+        </Box>
+        )}
+        {error && <h1>Some has gone wrong...</h1>}
         {productList ? productList.map((card) => (
           <ProductCardItem key={card.id} product={card} page={page} />
         )) : null}

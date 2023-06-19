@@ -1,5 +1,6 @@
 import { decrement, increment } from '@/app/redux/features/beforeOrderCounterSlice';
 import { useAppDispatch, useAppSelector } from '@/app/redux/hooks';
+// import { IProduct } from '@/interfaces/product-interface';
 import { Button, ButtonGroup } from '@mui/material';
 import React from 'react';
 
