@@ -53,7 +53,7 @@ export default function ProductPage() {
         >
           Предыдущий
         </Button>
-        <Stack direction="column" gap={2} width="55%">
+        <Stack direction="column" gap={2} width="57%">
           <Button
             startIcon={<ArrowLeftIcon />}
             onClick={() => router.back()}

@@ -11,12 +11,15 @@ import {
 } from '@mui/material';
 import Image from 'next/image';
 import ButtonCounter from '@/components/buttonCounter';
-import { useAppSelector } from '@/app/redux/hooks';
+import { useAppSelector } from '@/app/redux/hooks'; // Для запроса моковых данных
+// import { useFetchCartStateQuery } from '@/app/redux/services/cart-service';
 import Cart from './cart';
 
 export default function BasicPopover() {
   const [anchorEl, setAnchorEl] = React.useState<HTMLButtonElement | null>(null);
   const cartList = useAppSelector((state) => state.counterReducer.cartList);
+  // const check = useFetchCartStateQuery('');
+  // console.log('check', check);
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
     setAnchorEl(event.currentTarget);
   };
@@ -27,7 +30,7 @@ export default function BasicPopover() {
   const open = Boolean(anchorEl);
   const id = open ? 'simple-popover' : undefined;
   //
-  const fullCost = cartList.map((item) => item.product.price * item.quantity)
+  const fullCost = cartList && cartList.map((item) => item.product.price * item.quantity)
     .reduce((accumulator, currValue) => accumulator + currValue);
   return (
     <Box

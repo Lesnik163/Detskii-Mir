@@ -15,8 +15,8 @@ export const counter = createSlice({
   initialState,
   reducers: {
     increment: (state, action) => {
-      // eslint-disable-next-line no-param-reassign
-      state.cartList = state.cartList.map((item) => {
+      const newState = state.cartList;
+      newState.map((item) => {
         if (item.product.id === action.payload) {
           // eslint-disable-next-line no-param-reassign
           item.quantity += 1;
@@ -24,9 +24,9 @@ export const counter = createSlice({
         return item;
       });
     },
-    decrement: (state, action) => {
-      // eslint-disable-next-line no-param-reassign
-      state.cartList = state.cartList.map((item) => {
+    decrement: (state: CounterState, action) => {
+      const newState = state.cartList;
+      newState.map((item) => {
         if (item.product.id === action.payload) {
           // eslint-disable-next-line no-param-reassign
           item.quantity -= 1;

@@ -5,22 +5,25 @@ import { useState } from 'react';
 import { IProduct } from '@/interfaces/product-interface';
 import { cartApi } from '@/app/redux/services/cart-service';
 import { ICartUpd } from '@/interfaces/cart-interfaces';
+import { useParams } from 'next/navigation';
+import { useAppSelector } from '@/app/redux/hooks';
 import StarIcon from '../../public/StarIcon.svg';
 import StarEmptyIcon from '../../public/StarEmptyIcon.svg';
 import ReturnIcon from '../../public/Return.svg';
-// import ProductDetailsButtonCounter from './product-details-button-counter';
+import ProductDetailsButtonCounter from './product-details-button-counter';
 
 export default function ProductDetails({ product }: { product: IProduct }) {
   const [isAddedToCart, setAddedToCart] = useState(false);
   const [createCart] = cartApi.useUpdateCartMutation();
-
+  const params = useParams();
+  const quantity = useAppSelector((state) => state.beforeOrderCounterReducer.quantity);
   const changeBtnAndUpdateCart = async () => {
     setAddedToCart(!isAddedToCart);
     await createCart({
       data: [
         {
-          id: '4966233',
-          quantity: 42,
+          id: `${params.id}`,
+          quantity,
         },
       ],
     } as ICartUpd);
@@ -31,7 +34,6 @@ export default function ProductDetails({ product }: { product: IProduct }) {
       sx={{
         mx: 'auto',
         p: 2,
-        // width: '60%',
         columnCount: 2,
         borderRadius: '16px',
       }}
@@ -45,7 +47,7 @@ export default function ProductDetails({ product }: { product: IProduct }) {
           alt="product"
         />
       </Box>
-      <Stack>
+      <Stack width={370}>
         <Typography
           fontSize={20}
           fontWeight="bold"
@@ -77,13 +79,14 @@ export default function ProductDetails({ product }: { product: IProduct }) {
         </Button>
         )}
         {isAddedToCart && (
-        <Box display="flex" justifyContent="space-between">
-          {/* <ProductDetailsButtonCounter /> */}
-          <Typography width={46}>FFF</Typography>
+        <Box display="flex" gap={1} width={360}>
+          <ProductDetailsButtonCounter />
           <Button
             variant="contained"
             size="large"
-            sx={{ bgcolor: 'warning.main', color: 'white', width: '46%' }}
+            sx={{
+              bgcolor: 'warning.main', color: 'white', width: '190px', borderRadius: '12px',
+            }}
           >
             Оформить заказ
           </Button>
