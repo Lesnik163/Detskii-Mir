@@ -2,11 +2,12 @@ import {
   Box, Button, CardMedia, Paper, Rating, Stack, Typography,
 } from '@mui/material';
 import { useState } from 'react';
+import { pushCard } from '@/app/redux/features/counterSlice';
 import { IProduct } from '@/interfaces/product-interface';
 import { cartApi } from '@/app/redux/services/cart-service';
 import { ICartUpd } from '@/interfaces/cart-interfaces';
 import { useParams } from 'next/navigation';
-import { useAppSelector } from '@/app/redux/hooks';
+import { useAppDispatch, useAppSelector } from '@/app/redux/hooks';
 import StarIcon from '../../public/StarIcon.svg';
 import StarEmptyIcon from '../../public/StarEmptyIcon.svg';
 import ReturnIcon from '../../public/Return.svg';
@@ -19,6 +20,7 @@ export default function ProductDetails(
   const [createCart] = cartApi.useUpdateCartMutation();
   const params = useParams();
   const quantity = useAppSelector((state) => state.beforeOrderCounterReducer.quantity);
+  const dispatch = useAppDispatch();
   const changeBtnAndUpdateCart = async () => {
     setAddedToCart(!isAddedToCart);
     await createCart({
@@ -28,8 +30,15 @@ export default function ProductDetails(
           quantity,
         },
       ],
-    } as ICartUpd);
+    } as ICartUpd)
+      .unwrap()
+      .then((data) => {
+        dispatch(pushCard(data[0]));
+        localStorage.setItem(`${params.id}`, JSON.stringify(data[0]));
+      })
+      .then((error) => new Error(`${error}`));
   };
+
   return (
     <Paper
       elevation={0}

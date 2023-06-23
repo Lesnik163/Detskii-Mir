@@ -6,14 +6,12 @@ import Image from 'next/image';
 import Box from '@mui/material/Box';
 import { useAppSelector } from '@/app/redux/hooks';
 
-// type CartProps = {
-//   // eslint-disable-next-line no-unused-vars
-//   onClick: (event: React.MouseEvent<HTMLButtonElement>) => void
-// }
-// { onClick }: CartProps
 export default function Cart() {
   const cartList = useAppSelector((state) => state.counterReducer.cartList);
 
+  // if (cartList?.length === 0) {
+  //   return null;
+  // }
   return (
     <Box
       sx={{
@@ -29,7 +27,8 @@ export default function Cart() {
       <Typography
         sx={{ color: 'black', textTransform: 'none' }}
       >
-        { `Корзина (${cartList.length})`}
+        {(cartList?.length === 0) ? 'Корзина ( )'
+          : `Корзина (${cartList?.length})`}
       </Typography>
     </Box>
   );
