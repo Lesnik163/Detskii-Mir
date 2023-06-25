@@ -12,8 +12,10 @@ export const beforeOrderCounter = createSlice({
   initialState,
   reducers: {
     increment: (state: BeforeOrderCounterState) => {
-      // eslint-disable-next-line no-param-reassign
-      state.quantity += 1;
+      if (state.quantity < 10) {
+        // eslint-disable-next-line no-param-reassign
+        state.quantity += 1;
+      }
     },
     decrement: (state: BeforeOrderCounterState) => {
       if (state.quantity >= 1) {
