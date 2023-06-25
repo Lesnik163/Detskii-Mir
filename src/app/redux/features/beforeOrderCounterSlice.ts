@@ -4,10 +4,10 @@ type BeforeOrderCounterState = {
   quantity: number;
   }
 const initialState = {
-  quantity: 1,
+  quantity: 0,
 };
 
-const beforeOrderCounter = createSlice({
+export const beforeOrderCounter = createSlice({
   name: 'beforeOrderCounter',
   initialState,
   reducers: {
@@ -16,13 +16,20 @@ const beforeOrderCounter = createSlice({
       state.quantity += 1;
     },
     decrement: (state: BeforeOrderCounterState) => {
+      if (state.quantity >= 1) {
+        // eslint-disable-next-line no-param-reassign
+        state.quantity -= 1;
+      }
+    },
+    nullify: (state: BeforeOrderCounterState) => {
       // eslint-disable-next-line no-param-reassign
-      state.quantity -= 1;
+      state.quantity = 0;
     },
   },
 });
-export default beforeOrderCounter.reducer;
 export const {
   increment,
   decrement,
+  nullify,
 } = beforeOrderCounter.actions;
+export default beforeOrderCounter.reducer;

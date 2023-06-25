@@ -1,3 +1,6 @@
+/* eslint-disable react-hooks/exhaustive-deps */
+/* eslint-disable no-undef */
+
 'use client';
 
 import * as React from 'react';
@@ -5,13 +8,16 @@ import { Typography } from '@mui/material';
 import Image from 'next/image';
 import Box from '@mui/material/Box';
 import { useAppSelector } from '@/app/redux/hooks';
+// import { useEffect } from 'react';
 
 export default function Cart() {
   const cartList = useAppSelector((state) => state.counterReducer.cartList);
-
-  // if (cartList?.length === 0) {
-  //   return null;
-  // }
+  // useEffect(() => {
+  //   if (typeof window !== 'undefined') {
+  //     // eslint-disable-next-line react-hooks/exhaustive-deps, no-unused-vars
+  //     const storageLength: number = localStorage.length;
+  //   }
+  // }, [storageLength.length]);
   return (
     <Box
       sx={{
@@ -27,8 +33,7 @@ export default function Cart() {
       <Typography
         sx={{ color: 'black', textTransform: 'none' }}
       >
-        {(cartList?.length === 0) ? 'Корзина ( )'
-          : `Корзина (${cartList?.length})`}
+        {`Корзина (${cartList?.length})`}
       </Typography>
     </Box>
   );

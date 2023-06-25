@@ -7,11 +7,12 @@ import { IProduct } from '@/interfaces/product-interface';
 import { cartApi } from '@/app/redux/services/cart-service';
 import { ICartUpd } from '@/interfaces/cart-interfaces';
 import { useParams } from 'next/navigation';
-import { useAppDispatch, useAppSelector } from '@/app/redux/hooks';
+import { useAppDispatch } from '@/app/redux/hooks';
+import { nullify } from '@/app/redux/features/beforeOrderCounterSlice';
 import StarIcon from '../../public/StarIcon.svg';
 import StarEmptyIcon from '../../public/StarEmptyIcon.svg';
 import ReturnIcon from '../../public/Return.svg';
-import ProductDetailsButtonCounter from './product-details-button-counter';
+import BeforeOrderButtonCounter from './beforeOrderButtonCounter';
 
 export default function ProductDetails(
   { product }: { product: IProduct },
@@ -19,15 +20,15 @@ export default function ProductDetails(
   const [isAddedToCart, setAddedToCart] = useState(false);
   const [createCart] = cartApi.useUpdateCartMutation();
   const params = useParams();
-  const quantity = useAppSelector((state) => state.beforeOrderCounterReducer.quantity);
   const dispatch = useAppDispatch();
   const changeBtnAndUpdateCart = async () => {
     setAddedToCart(!isAddedToCart);
+    dispatch(nullify); // обнуляет счётчик
     await createCart({
       data: [
         {
           id: `${params.id}`,
-          quantity,
+          quantity: 1,
         },
       ],
     } as ICartUpd)
@@ -91,12 +92,12 @@ export default function ProductDetails(
         )}
         {isAddedToCart && (
         <Box display="flex" gap={1} width={360}>
-          <ProductDetailsButtonCounter />
+          <BeforeOrderButtonCounter />
           <Button
             variant="contained"
             size="large"
             sx={{
-              bgcolor: 'warning.main', color: 'white', width: '190px', borderRadius: '12px',
+              bgcolor: 'warning.main', color: 'white', width: '200px', borderRadius: '12px',
             }}
           >
             Оформить заказ

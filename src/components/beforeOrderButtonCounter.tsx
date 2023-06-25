@@ -1,19 +1,14 @@
-import { decrement, increment } from '@/app/redux/features/beforeOrderCounterSlice';
+import * as React from 'react';
+import Button from '@mui/material/Button';
+import ButtonGroup from '@mui/material/ButtonGroup';
 import { useAppDispatch, useAppSelector } from '@/app/redux/hooks';
-// import { IProduct } from '@/interfaces/product-interface';
-import { Button, ButtonGroup } from '@mui/material';
-import React from 'react';
+import { increment, decrement } from '@/app/redux/features/beforeOrderCounterSlice';
 
-function ProductDetailsButtonCounter() {
-  const quantity = useAppSelector((state) => state.beforeOrderCounterReducer.quantity);
+export default function BeforeOrderButtonCounter() {
   const dispatch = useAppDispatch();
-  const decrease = ():void => {
-    if (quantity >= 2) {
-      dispatch(decrement());
-    }
-  };
+  const quantity = useAppSelector((state) => state.beforeOrderCounterReducer.quantity);
   const buttons = [
-    <Button onClick={() => dispatch(decrease)} key="one">-</Button>,
+    <Button onClick={() => dispatch(decrement())} key="one">-</Button>,
     <Button key="two" disabled>{quantity}</Button>,
     <Button onClick={() => dispatch(increment())} key="three">+</Button>,
   ];
@@ -24,6 +19,7 @@ function ProductDetailsButtonCounter() {
       aria-label="small button group"
       sx={{
         borderRadius: '12px',
+        mr: '2px',
         '& .MuiButton-root': {
           color: 'warning.main',
           height: '52px',
@@ -54,5 +50,3 @@ function ProductDetailsButtonCounter() {
     </ButtonGroup>
   );
 }
-
-export default ProductDetailsButtonCounter;

@@ -9,6 +9,8 @@ import { useGetProductByIdQuery, useGetProductsQuery } from '@/app/redux/service
 import Header from '@/components/header';
 import { IProduct } from '@/interfaces/product-interface';
 import Variants from '@/components/isLoadingForCard';
+import { useDispatch } from 'react-redux';
+import { nullify } from '@/app/redux/features/beforeOrderCounterSlice';
 import ProductDetails from '../../../components/product-details';
 import ArrowLeftIcon from '../../../../public/Arrow-left.svg';
 
@@ -20,10 +22,9 @@ export default function ProductPage() {
   const page = Number(searchParams.get('page'));
   const currObj = useGetProductsQuery({ page, limit });
   const { data, error, isLoading } = useGetProductByIdQuery(params.id);
-  // if (!data) {
-  //   return null;
-  // }
+  const dispatch = useDispatch();
   const currentPageArr = currObj?.data?.data;
+
   const findPrevGoodId = (goodsArr: Array<IProduct>, id: string): string => {
     const currentCardInd = goodsArr.findIndex((card) => card.id === id);
     const prevInd = currentCardInd - 1;
@@ -40,7 +41,14 @@ export default function ProductPage() {
     }
     return goodsArr[nextInd].id;
   };
-
+  const routePreviousAndNullify = () => {
+    router.replace(`/products/${currentPageArr && findPrevGoodId(currentPageArr, params.id)}?page=${page}&limit=20`);
+    dispatch(nullify());
+  };
+  const routeNextAndNullify = () => {
+    router.replace(`/products/${currentPageArr && findNextGoodId(currentPageArr, params.id)}?page=${page}&limit=20`);
+    dispatch(nullify());
+  };
   return (
     <>
       <Header />
@@ -50,7 +58,7 @@ export default function ProductPage() {
           sx={{
             backgroundColor: 'warning.main', color: 'white', mt: '18%', height: '40px',
           }}
-          onClick={() => router.replace(`/products/${currentPageArr && findPrevGoodId(currentPageArr, params.id)}?page=${page}&limit=20`)}
+          onClick={routePreviousAndNullify}
         >
           Предыдущий
         </Button>
@@ -84,12 +92,11 @@ export default function ProductPage() {
           sx={{
             backgroundColor: 'warning.main', color: 'white', mt: '18%', height: '40px',
           }}
-          onClick={() => router.replace(`/products/${currentPageArr && findNextGoodId(currentPageArr, params.id)}?page=${page}&limit=20`)}
+          onClick={routeNextAndNullify}
         >
           следующий
         </Button>
       </Box>
-
     </>
   );
 }

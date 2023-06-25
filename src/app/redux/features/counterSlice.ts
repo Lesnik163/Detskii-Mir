@@ -2,18 +2,19 @@ import { ICartItem } from '@/interfaces/cart-interfaces';
 // import cartsMock from '@/mockData/cartsMock'; //Моковый массив данных
 import { createSlice } from '@reduxjs/toolkit';
 
-const storageArr = Object.entries(localStorage);
-const parseStorageArr = storageArr.map((item) => JSON.parse(item[1]));
-
-const forCartListInitValue = parseStorageArr.length === 0 ? [] : parseStorageArr;
-
+// let forCartListInitValue;
+// if (typeof window !== 'undefined') {
+//   const storageArr = Object.entries(localStorage);
+//   const parseStorageArr = storageArr.map((item) => JSON.parse(item[1]));
+//   forCartListInitValue = parseStorageArr?.length === 0 ? [] : parseStorageArr;
+// }
 type CounterState = {
   cartList: ICartItem[] | null,
 }
 
 const initialState = {
   // cartList: cartsMock, //Для моковых данных
-  cartList: forCartListInitValue,
+  cartList: [],
 } as CounterState;
 export const counter = createSlice({
   name: 'counter',
