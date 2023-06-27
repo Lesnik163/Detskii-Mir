@@ -18,15 +18,8 @@ export default function BasicPopover() {
   const [anchorEl, setAnchorEl] = React.useState<HTMLButtonElement | null>(null);
   // Получаем массив из counterSlice
   const cartList = useAppSelector((state) => state.counterReducer.cartList);
+  // Если массив пуст получаем из LocStorage в файле product-details
 
-  // Если массив пуст получаем из LocStorage
-  // useEffect(() => {
-  //   if (typeof window !== 'undefined') {
-  //     // eslint-disable-next-line react-hooks/exhaustive-deps, no-unused-vars
-  //     const storageLength: number = localStorage.length;
-  //     setGoodListLength(storageLength);
-  //   }
-  // }, []);
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
     setAnchorEl(event.currentTarget);
   };

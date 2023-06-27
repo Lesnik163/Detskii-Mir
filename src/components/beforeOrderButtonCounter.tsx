@@ -20,7 +20,8 @@ export default function BeforeOrderButtonCounter({ id }:{id:string}) {
   }, [quantity]);
   //
   const [createCart] = cartApi.useUpdateCartMutation();
-  const defineSignAndUpdate = async (evaluate:any) => {
+  const defineSignAndUpdate = async (evaluate:{type: 'beforeOrderCounter/decrement'}
+   | {type: 'beforeOrderCounter/increment'}) => {
     dispatch(evaluate);
     let result;
     if (evaluate.type === 'beforeOrderCounter/decrement') {

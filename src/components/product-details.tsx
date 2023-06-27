@@ -6,6 +6,7 @@ import { IProduct } from '@/interfaces/product-interface';
 import { useParams } from 'next/navigation';
 import { useAppDispatch, useAppSelector } from '@/app/redux/hooks';
 import { nullify } from '@/app/redux/features/beforeOrderCounterSlice';
+import { pushCard } from '@/app/redux/features/counterSlice';
 import StarIcon from '../../public/StarIcon.svg';
 import StarEmptyIcon from '../../public/StarEmptyIcon.svg';
 import ReturnIcon from '../../public/Return.svg';
@@ -25,7 +26,7 @@ export default function ProductDetails(
     dispatch(nullify); // обнуляет счётчик
   };
   const quantity = useAppSelector((state) => state.beforeOrderCounterReducer.quantity);
-
+  // Проверка , что товаров не более 10шт
   useEffect(() => {
     if (quantity === 10) {
       setProductLimit(true);
@@ -33,6 +34,20 @@ export default function ProductDetails(
       setProductLimit(false);
     }
   }, [quantity]);
+
+  // Процедура напонения store состоянием из LocalStorage, если store пуст
+  const cartList = useAppSelector((state) => state.counterReducer.cartList);
+  useEffect(() => {
+    if (typeof window !== 'undefined' && cartList?.length === 0) {
+      // eslint-disable-next-line react-hooks/exhaustive-deps, no-unused-vars
+      const locStorageArr = Object.entries(localStorage);
+      const parsedLocStorageArr = locStorageArr.map((item) => JSON.parse(item[1]));
+      for (let i = 0; i < parsedLocStorageArr.length; i += 1) {
+        dispatch(pushCard(parsedLocStorageArr[i]));
+      }
+    }
+  }, [cartList, dispatch]);
+
   return (
     <Paper
       elevation={0}
