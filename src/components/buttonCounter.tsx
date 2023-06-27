@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React, { useState, useEffect } from 'react';
 import Button from '@mui/material/Button';
 import ButtonGroup from '@mui/material/ButtonGroup';
 import { useAppDispatch } from '@/app/redux/hooks';
@@ -14,10 +14,21 @@ export default function ButtonCounter(props: ButtonCounterProps) {
       dispatch(decrement(order.product.id));
     }
   };
+  const [blocked, setBlocked] = useState(false);
+  useEffect(() => {
+    if (order.quantity === 11) {
+      order.quantity = 10;
+    }
+    if (order.quantity >= 9) {
+      setBlocked(true);
+    } else {
+      setBlocked(false);
+    }
+  }, [order]);
   const buttons = [
     <Button onClick={() => dispatch(decrease)} key="one">-</Button>,
-    <Button key="two" disabled>{order.quantity}</Button>,
-    <Button onClick={() => dispatch(increment(order.product.id))} key="three">+</Button>,
+    <Button key="two" disabled>{order.quantity + 1}</Button>,
+    <Button onClick={() => dispatch(increment(order))} key="three" disabled={blocked}>+</Button>,
   ];
 
   return (

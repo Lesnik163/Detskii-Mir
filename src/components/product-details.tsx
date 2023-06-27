@@ -1,7 +1,7 @@
 import {
   Box, Button, CardMedia, Paper, Rating, Stack, Typography,
 } from '@mui/material';
-import { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { pushCard } from '@/app/redux/features/counterSlice';
 import { IProduct } from '@/interfaces/product-interface';
 import { cartApi } from '@/app/redux/services/cart-service';
@@ -13,14 +13,8 @@ import StarIcon from '../../public/StarIcon.svg';
 import StarEmptyIcon from '../../public/StarEmptyIcon.svg';
 import ReturnIcon from '../../public/Return.svg';
 import BeforeOrderButtonCounter from './beforeOrderButtonCounter';
+import Limit from './limit';
 
-function Limit() {
-  return (
-    <Box fontSize="10px" color="red">
-      Возможно не более 10 заказов!
-    </Box>
-  );
-}
 export default function ProductDetails(
   { product }: { product: IProduct },
 ) {
@@ -29,14 +23,19 @@ export default function ProductDetails(
   const [createCart] = cartApi.useUpdateCartMutation();
   const params = useParams();
   const dispatch = useAppDispatch();
-  const changeBtnAndUpdateCart = async () => {
+
+  const changeBtn = () => {
     setAddedToCart(!isAddedToCart);
     dispatch(nullify); // обнуляет счётчик
+  };
+  const quantity = useAppSelector((state) => state.beforeOrderCounterReducer.quantity);
+
+  const updateCard = async () => {
     await createCart({
       data: [
         {
           id: `${params.id}`,
-          quantity: 1,
+          quantity,
         },
       ],
     } as ICartUpd)
@@ -47,7 +46,6 @@ export default function ProductDetails(
       })
       .then((error) => new Error(`${error}`));
   };
-  const quantity = useAppSelector((state) => state.beforeOrderCounterReducer.quantity);
   useEffect(() => {
     if (quantity === 10) {
       setProductLimit(true);
@@ -95,7 +93,8 @@ export default function ProductDetails(
 
         {!isAddedToCart && (
         <Button
-          onClick={changeBtnAndUpdateCart}
+          component="div"
+          onClick={changeBtn}
           fullWidth
           variant="contained"
           size="large"
@@ -108,7 +107,9 @@ export default function ProductDetails(
         {isAddedToCart && (
         <>
           <Box display="flex" gap={1} width={360}>
-            <BeforeOrderButtonCounter />
+            <Box onMouseDown={updateCard}>
+              <BeforeOrderButtonCounter />
+            </Box>
             <Button
               variant="contained"
               size="large"

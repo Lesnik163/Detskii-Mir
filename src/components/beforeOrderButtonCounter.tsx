@@ -1,19 +1,28 @@
-import * as React from 'react';
+import React, { useState, useEffect } from 'react';
 import Button from '@mui/material/Button';
-import ButtonGroup from '@mui/material/ButtonGroup';
+import { ButtonGroup } from '@mui/material';
 import { useAppDispatch, useAppSelector } from '@/app/redux/hooks';
 import { increment, decrement } from '@/app/redux/features/beforeOrderCounterSlice';
 
 export default function BeforeOrderButtonCounter() {
   const dispatch = useAppDispatch();
   const quantity = useAppSelector((state) => state.beforeOrderCounterReducer.quantity);
+  const [blocked, setBlocked] = useState(false);
+  useEffect(() => {
+    if (quantity > 9) {
+      setBlocked(true);
+    } else {
+      setBlocked(false);
+    }
+  }, [quantity]);
   const buttons = [
     <Button onClick={() => dispatch(decrement())} key="one">-</Button>,
     <Button key="two" disabled>{quantity}</Button>,
-    <Button onClick={() => dispatch(increment())} key="three">+</Button>,
+    <Button onClick={() => dispatch(increment())} key="three" disabled={blocked}>+</Button>,
   ];
 
   return (
+
     <ButtonGroup
       size="small"
       aria-label="small button group"

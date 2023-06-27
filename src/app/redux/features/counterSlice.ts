@@ -23,7 +23,7 @@ export const counter = createSlice({
     increment: (state, action) => {
       const newState = state.cartList;
       newState?.map((item) => {
-        if (item.product.id === action.payload) {
+        if (item.product.id === action.payload.product.id && action.payload.quantity <= 9) {
           // eslint-disable-next-line no-param-reassign
           item.quantity += 1;
         }
@@ -41,7 +41,17 @@ export const counter = createSlice({
       });
     },
     pushCard: (state: CounterState, action) => {
-      state?.cartList?.push(action.payload);
+      state?.cartList?.map((card) => {
+        if (card.product.id === action.payload.product.id) {
+          // eslint-disable-next-line no-param-reassign
+          card.quantity = action.payload.quantity;
+        }
+        return card;
+      });
+      if (state?.cartList?.find((card) => card.product.id
+      === action.payload.product.id) === undefined) {
+        state?.cartList?.push(action.payload);
+      }
     },
   },
 });

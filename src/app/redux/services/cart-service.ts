@@ -17,7 +17,7 @@ export const cartApi = createApi({
       }),
       invalidatesTags: ['Cart'],
     }),
-    fetchCartState: builder.query<ICartItem[], string>({
+    fetchCartState: builder.query<ICartItem[] | undefined, string>({
       query: () => ({
         url: 'cart',
       }),
