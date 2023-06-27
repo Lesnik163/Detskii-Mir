@@ -1,6 +1,6 @@
 'use client';
 
-import * as React from 'react';
+import React from 'react';
 import Popover from '@mui/material/Popover';
 import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
@@ -10,14 +10,23 @@ import {
   List, ListItemAvatar, ListItemText, Stack,
 } from '@mui/material';
 import Image from 'next/image';
+import { useAppSelector } from '@/app/redux/hooks';
 import ButtonCounter from '@/components/buttonCounter';
-import { useAppSelector } from '@/app/redux/hooks'; // Для запроса моковых данных
 import Cart from './cart';
 
 export default function BasicPopover() {
   const [anchorEl, setAnchorEl] = React.useState<HTMLButtonElement | null>(null);
   // Получаем массив из counterSlice
   const cartList = useAppSelector((state) => state.counterReducer.cartList);
+
+  // Если массив пуст получаем из LocStorage
+  // useEffect(() => {
+  //   if (typeof window !== 'undefined') {
+  //     // eslint-disable-next-line react-hooks/exhaustive-deps, no-unused-vars
+  //     const storageLength: number = localStorage.length;
+  //     setGoodListLength(storageLength);
+  //   }
+  // }, []);
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
     setAnchorEl(event.currentTarget);
   };

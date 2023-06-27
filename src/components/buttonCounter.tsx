@@ -16,18 +16,16 @@ export default function ButtonCounter(props: ButtonCounterProps) {
   };
   const [blocked, setBlocked] = useState(false);
   useEffect(() => {
-    if (order.quantity === 11) {
-      order.quantity = 10;
-    }
-    if (order.quantity >= 9) {
+    if (order.quantity >= 10) {
       setBlocked(true);
     } else {
       setBlocked(false);
     }
   }, [order]);
+
   const buttons = [
     <Button onClick={() => dispatch(decrease)} key="one">-</Button>,
-    <Button key="two" disabled>{order.quantity + 1}</Button>,
+    <Button key="two" disabled>{order.quantity}</Button>,
     <Button onClick={() => dispatch(increment(order))} key="three" disabled={blocked}>+</Button>,
   ];
 

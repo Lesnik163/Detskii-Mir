@@ -3,8 +3,11 @@ import Button from '@mui/material/Button';
 import { ButtonGroup } from '@mui/material';
 import { useAppDispatch, useAppSelector } from '@/app/redux/hooks';
 import { increment, decrement } from '@/app/redux/features/beforeOrderCounterSlice';
+import { cartApi } from '@/app/redux/services/cart-service';
+import { ICartUpd } from '@/interfaces/cart-interfaces';
+import { pushCard } from '@/app/redux/features/counterSlice';
 
-export default function BeforeOrderButtonCounter() {
+export default function BeforeOrderButtonCounter({ id }:{id:string}) {
   const dispatch = useAppDispatch();
   const quantity = useAppSelector((state) => state.beforeOrderCounterReducer.quantity);
   const [blocked, setBlocked] = useState(false);
@@ -15,10 +18,37 @@ export default function BeforeOrderButtonCounter() {
       setBlocked(false);
     }
   }, [quantity]);
+  //
+  const [createCart] = cartApi.useUpdateCartMutation();
+  const defineSignAndUpdate = async (evaluate:any) => {
+    dispatch(evaluate);
+    let result;
+    if (evaluate.type === 'beforeOrderCounter/decrement') {
+      result = quantity - 1;
+    }
+    if (evaluate.type === 'beforeOrderCounter/increment') {
+      result = quantity + 1;
+    }
+    await createCart({
+      data: [
+        {
+          id,
+          quantity: result,
+        },
+      ],
+    } as ICartUpd)
+      .unwrap()
+      .then((data) => {
+        dispatch(pushCard(data[0]));
+        localStorage.setItem(`${id}`, JSON.stringify(data[0]));
+      })
+      .then((error) => new Error(`${error}`));
+  };
+  //
   const buttons = [
-    <Button onClick={() => dispatch(decrement())} key="one">-</Button>,
+    <Button onClick={() => defineSignAndUpdate(decrement())} key="one">-</Button>,
     <Button key="two" disabled>{quantity}</Button>,
-    <Button onClick={() => dispatch(increment())} key="three" disabled={blocked}>+</Button>,
+    <Button onClick={() => defineSignAndUpdate(increment())} key="three" disabled={blocked}>+</Button>,
   ];
 
   return (

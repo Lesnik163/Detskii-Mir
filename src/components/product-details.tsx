@@ -2,10 +2,7 @@ import {
   Box, Button, CardMedia, Paper, Rating, Stack, Typography,
 } from '@mui/material';
 import React, { useState, useEffect } from 'react';
-import { pushCard } from '@/app/redux/features/counterSlice';
 import { IProduct } from '@/interfaces/product-interface';
-import { cartApi } from '@/app/redux/services/cart-service';
-import { ICartUpd } from '@/interfaces/cart-interfaces';
 import { useParams } from 'next/navigation';
 import { useAppDispatch, useAppSelector } from '@/app/redux/hooks';
 import { nullify } from '@/app/redux/features/beforeOrderCounterSlice';
@@ -20,7 +17,6 @@ export default function ProductDetails(
 ) {
   const [productLimit, setProductLimit] = useState(false);
   const [isAddedToCart, setAddedToCart] = useState(false);
-  const [createCart] = cartApi.useUpdateCartMutation();
   const params = useParams();
   const dispatch = useAppDispatch();
 
@@ -30,22 +26,6 @@ export default function ProductDetails(
   };
   const quantity = useAppSelector((state) => state.beforeOrderCounterReducer.quantity);
 
-  const updateCard = async () => {
-    await createCart({
-      data: [
-        {
-          id: `${params.id}`,
-          quantity,
-        },
-      ],
-    } as ICartUpd)
-      .unwrap()
-      .then((data) => {
-        dispatch(pushCard(data[0]));
-        localStorage.setItem(`${params.id}`, JSON.stringify(data[0]));
-      })
-      .then((error) => new Error(`${error}`));
-  };
   useEffect(() => {
     if (quantity === 10) {
       setProductLimit(true);
@@ -107,8 +87,8 @@ export default function ProductDetails(
         {isAddedToCart && (
         <>
           <Box display="flex" gap={1} width={360}>
-            <Box onMouseDown={updateCard}>
-              <BeforeOrderButtonCounter />
+            <Box>
+              <BeforeOrderButtonCounter id={params.id} />
             </Box>
             <Button
               variant="contained"

@@ -7,12 +7,12 @@ import React, { useEffect, useState } from 'react';
 import { Typography } from '@mui/material';
 import Image from 'next/image';
 import Box from '@mui/material/Box';
-// import { useAppSelector } from '@/app/redux/hooks';
+import { useAppSelector } from '@/app/redux/hooks';
 // import { useEffect } from 'react';
 
 export default function Cart() {
   const [goodListLength, setGoodListLength] = useState(0);
-  // const cartList = useAppSelector((state) => state.counterReducer.cartList);
+  const cartList = useAppSelector((state) => state.counterReducer.cartList);
   useEffect(() => {
     if (typeof window !== 'undefined') {
       // eslint-disable-next-line react-hooks/exhaustive-deps, no-unused-vars
@@ -20,6 +20,7 @@ export default function Cart() {
       setGoodListLength(storageLength);
     }
   }, []);
+  const cartQuantity = cartList?.length === 0 ? goodListLength : cartList?.length;
   return (
     <Box
       sx={{
@@ -35,7 +36,7 @@ export default function Cart() {
       <Typography
         sx={{ color: 'black', textTransform: 'none' }}
       >
-        {`Корзина (${goodListLength})`}
+        {`Корзина (${cartQuantity})`}
       </Typography>
     </Box>
   );

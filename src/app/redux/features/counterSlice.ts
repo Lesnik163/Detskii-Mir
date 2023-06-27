@@ -2,12 +2,6 @@ import { ICartItem } from '@/interfaces/cart-interfaces';
 // import cartsMock from '@/mockData/cartsMock'; //Моковый массив данных
 import { createSlice } from '@reduxjs/toolkit';
 
-// let forCartListInitValue;
-// if (typeof window !== 'undefined') {
-//   const storageArr = Object.entries(localStorage);
-//   const parseStorageArr = storageArr.map((item) => JSON.parse(item[1]));
-//   forCartListInitValue = parseStorageArr?.length === 0 ? [] : parseStorageArr;
-// }
 type CounterState = {
   cartList: ICartItem[] | null,
 }
@@ -23,9 +17,15 @@ export const counter = createSlice({
     increment: (state, action) => {
       const newState = state.cartList;
       newState?.map((item) => {
-        if (item.product.id === action.payload.product.id && action.payload.quantity <= 9) {
+        if (item.product.id === action.payload.product.id) {
           // eslint-disable-next-line no-param-reassign
-          item.quantity += 1;
+          if (action.payload > 9) {
+            // eslint-disable-next-line no-param-reassign
+            item.quantity = 10;
+          } else {
+            // eslint-disable-next-line no-param-reassign
+            item.quantity += 1;
+          }
         }
         return item;
       });
