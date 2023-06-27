@@ -1,6 +1,6 @@
 'use client';
 
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import Popover from '@mui/material/Popover';
 import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
@@ -13,8 +13,10 @@ import Image from 'next/image';
 import { useAppSelector } from '@/app/redux/hooks';
 import ButtonCounter from '@/components/buttonCounter';
 import Cart from './cart';
+import CostLimit from './costLimit';
 
 export default function BasicPopover() {
+  const [fullCostLimit, setFullCostLimit] = useState(false);
   const [anchorEl, setAnchorEl] = React.useState<HTMLButtonElement | null>(null);
   // Получаем массив из counterSlice
   const cartList = useAppSelector((state) => state.counterReducer.cartList);
@@ -33,6 +35,14 @@ export default function BasicPopover() {
   const fullCost = cartList?.length !== 0
     ? cartList?.map((item) => item.product.price * item.quantity)
       .reduce((accumulator, currValue) => accumulator + currValue) : ' ';
+  // Проверка на общую стоимость не более 100 т.р.
+  useEffect(() => {
+    if (typeof fullCost === 'number' && fullCost >= 20000) {
+      setFullCostLimit(true);
+    } else {
+      setFullCostLimit(false);
+    }
+  }, [fullCost]);
   return (
     <Box
       sx={{
@@ -93,8 +103,10 @@ export default function BasicPopover() {
                   {fullCost}
               &nbsp;₽
                 </Typography>
+                {}
               </Stack>
               <Button
+                disabled={fullCostLimit}
                 variant="contained"
                 sx={{
                   borderRadius: '12px', fontSize: '16px', fontWeight: 'bold', background: '#0073E6', color: 'white', mb: '14px',
@@ -103,6 +115,7 @@ export default function BasicPopover() {
               >
                 Оформить заказ
               </Button>
+              {fullCostLimit && (<CostLimit />)}
             </List>
           )
           : <Box>Корзина пуста</Box>}

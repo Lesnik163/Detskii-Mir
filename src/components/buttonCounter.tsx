@@ -6,12 +6,14 @@ import { useAppDispatch, useAppSelector } from '@/app/redux/hooks';
 import { increment, decrement } from '@/app/redux/features/counterSlice';
 import { ICartItem } from '@/interfaces/cart-interfaces';
 import Limit from './limit';
+import CostLimit from './costLimit';
 
 type ButtonCounterProps = {order: ICartItem}
 export default function ButtonCounter(props: ButtonCounterProps) {
   const { order } = props;
   const dispatch = useAppDispatch();
-  const [productLimit, setProductLimit] = useState(true);
+  const [productLimit, setProductLimit] = useState(false);
+  const [costLimit, setCostLimit] = useState(false);
   const decrease = ():void => {
     if (order.quantity >= 1) {
       dispatch(decrement(order.product.id));
@@ -43,7 +45,23 @@ export default function ButtonCounter(props: ButtonCounterProps) {
       setProductLimit(false);
     }
   }, [fondOrderQuantity]);
-
+  // Проверка на максимальную стоимость
+  let fontOrderPrice;
+  if (typeof findingCard !== 'undefined') {
+    fontOrderPrice = findingCard?.[0].product?.price;
+  }
+  let totalOneTypeOrderCost: number = 0;
+  if (typeof fontOrderPrice === 'number'
+  && typeof fondOrderQuantity === 'number') {
+    totalOneTypeOrderCost = fondOrderQuantity * fontOrderPrice;
+  }
+  useEffect(() => {
+    if (totalOneTypeOrderCost >= 20000) {
+      setCostLimit(true);
+    } else {
+      setCostLimit(false);
+    }
+  }, [fondOrderQuantity, totalOneTypeOrderCost]);
   return (
     <Box display="flex" flexDirection="column">
       <ButtonGroup
@@ -78,8 +96,11 @@ export default function ButtonCounter(props: ButtonCounterProps) {
           },
         }}
       >
+
         {buttons}
+
       </ButtonGroup>
+      {costLimit && (<CostLimit />)}
       {productLimit && (<Limit />)}
     </Box>
   );
