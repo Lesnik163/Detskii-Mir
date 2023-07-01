@@ -19,6 +19,7 @@ export default function ButtonCounter(props: ButtonCounterProps) {
       dispatch(decrement(order.product.id));
     }
   };
+  // Блокировщик кнопок при кол-ве 10шт
   const [blocked, setBlocked] = useState(false);
   useEffect(() => {
     if (order.quantity >= 10) {
@@ -62,6 +63,7 @@ export default function ButtonCounter(props: ButtonCounterProps) {
       setCostLimit(false);
     }
   }, [fondOrderQuantity, totalOneTypeOrderCost]);
+
   return (
     <Box display="flex" flexDirection="column">
       <ButtonGroup
@@ -96,9 +98,7 @@ export default function ButtonCounter(props: ButtonCounterProps) {
           },
         }}
       >
-
         {buttons}
-
       </ButtonGroup>
       {costLimit && (<CostLimit />)}
       {productLimit && (<Limit />)}

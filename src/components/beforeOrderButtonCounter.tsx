@@ -30,20 +30,23 @@ export default function BeforeOrderButtonCounter({ id }:{id:string}) {
     if (evaluate.type === 'beforeOrderCounter/increment') {
       result = quantity + 1;
     }
-    await createCart({
-      data: [
-        {
-          id,
-          quantity: result,
-        },
-      ],
-    } as ICartUpd)
-      .unwrap()
-      .then((data) => {
-        dispatch(pushCard(data[0]));
-        localStorage.setItem(`${id}`, JSON.stringify(data[0]));
-      })
-      .then((error) => new Error(`${error}`));
+    if (result && result >= 0) { // условие, чтоб при нажатии на '-'
+      // не запросить отрицательное кол-во
+      await createCart({
+        data: [
+          {
+            id,
+            quantity: result,
+          },
+        ],
+      } as ICartUpd)
+        .unwrap()
+        .then((data) => {
+          dispatch(pushCard(data[0]));
+          localStorage.setItem(`${id}`, JSON.stringify(data[0]));
+        })
+        .then((error) => new Error(`${error}`));
+    }
   };
   //
   const buttons = [

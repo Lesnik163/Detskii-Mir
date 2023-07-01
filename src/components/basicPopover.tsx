@@ -12,16 +12,25 @@ import {
 import Image from 'next/image';
 import { useAppSelector } from '@/app/redux/hooks';
 import ButtonCounter from '@/components/buttonCounter';
+import { useDispatch } from 'react-redux';
+import { deleteCard } from '@/app/redux/features/counterSlice';
 import Cart from './cart';
 import CostLimit from './costLimit';
+import DeleteCart from '../../public/DeleteCart.svg';
+import DeleteCartOrange from '../../public/DeleteCartOrange.svg';
 
 export default function BasicPopover() {
   const [fullCostLimit, setFullCostLimit] = useState(false);
   const [anchorEl, setAnchorEl] = React.useState<HTMLButtonElement | null>(null);
+  const [icon, setIcon] = useState(<DeleteCartOrange />);
+  const [color, setColor] = useState('rgba(237, 44, 25, 1)');
+  const dispatch = useDispatch();
   // Получаем массив из counterSlice
   const cartList = useAppSelector((state) => state.counterReducer.cartList);
   // Если массив пуст получаем из LocStorage в файле product-details
+  useEffect(() => {
 
+  }, [cartList]);
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
     setAnchorEl(event.currentTarget);
   };
@@ -43,6 +52,15 @@ export default function BasicPopover() {
       setFullCostLimit(false);
     }
   }, [fullCost]);
+  // Выбор цветов и иконок в взависимости от количества 0 или до 10шт
+  const changeToBrightIcon = () => {
+    setIcon(<DeleteCart />);
+    setColor('rgba(237, 44, 25, 1)');
+  };
+  const changeToDimIcon = () => {
+    setIcon(<DeleteCartOrange />);
+    setColor('rgba(237, 44, 25, 0.7)');
+  };
   return (
     <Box
       sx={{
@@ -84,12 +102,28 @@ export default function BasicPopover() {
                     </ListItemAvatar>
                     <ListItemText
                       primary={order.product.title}
-                      sx={{ overflow: 'hidden', height: '50px' }}
+                      sx={{ overflow: 'hidden', height: '50px', width: '20px' }}
                     />
                     <ButtonCounter order={order} />
                     <Typography variant="h5" component="div" fontWeight={800} fontSize={20} width={100} textAlign="center">
-                      { order.product.price * order.quantity }
-                  &nbsp;₽
+                      { (order.product.price * order.quantity) !== 0
+                        ? (`${order.product.price * order.quantity}₽`)
+                        : (
+                          <Button
+                            startIcon={icon}
+                            variant="text"
+                            onMouseEnter={() => changeToBrightIcon()}
+                            onMouseLeave={() => changeToDimIcon()}
+                            onClick={() => dispatch(deleteCard(order.product.id))}
+                            sx={{
+                              color: { color },
+                              fontWeight: '900',
+                            }}
+                          >
+                            удалить
+                          </Button>
+
+                        )}
                     </Typography>
                   </Box>
                   <Divider sx={{ mx: 2 }} />
@@ -118,7 +152,17 @@ export default function BasicPopover() {
               {fullCostLimit && (<CostLimit />)}
             </List>
           )
-          : <Box>Корзина пуста</Box>}
+          : (
+            <Box
+              height="40px"
+              color="warning.main"
+              textAlign="center"
+              py="8px"
+              fontSize="17px"
+            >
+              Корзина пуста. Необходимо выбрать товар!
+            </Box>
+          )}
       </Popover>
     </Box>
   );

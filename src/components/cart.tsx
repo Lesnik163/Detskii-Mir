@@ -8,18 +8,16 @@ import { Typography } from '@mui/material';
 import Image from 'next/image';
 import Box from '@mui/material/Box';
 import { useAppSelector } from '@/app/redux/hooks';
-// import { useEffect } from 'react';
 
 export default function Cart() {
   const [goodListLength, setGoodListLength] = useState(0);
   const cartList = useAppSelector((state) => state.counterReducer.cartList);
   useEffect(() => {
     if (typeof window !== 'undefined') {
-      // eslint-disable-next-line react-hooks/exhaustive-deps, no-unused-vars
       const storageLength: number = localStorage.length;
       setGoodListLength(storageLength);
     }
-  }, []);
+  }, [goodListLength, cartList]);
   const cartQuantity = cartList?.length === 0 ? goodListLength : cartList?.length;
   return (
     <Box
