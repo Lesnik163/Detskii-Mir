@@ -4,12 +4,14 @@ import { productApi } from './services/product-service';
 import { cartApi } from './services/cart-service';
 import counterReducer from './features/counterSlice';
 import beforeOrderCounterReducer from './features/beforeOrderCounterSlice';
+import orderReducer from './features/orderSlice';
 import { orderApi } from './services/order-service';
 
 export const store = configureStore({
   reducer: {
     counterReducer,
     beforeOrderCounterReducer,
+    orderReducer,
     [productApi.reducerPath]: productApi.reducer,
     [cartApi.reducerPath]: cartApi.reducer,
     [orderApi.reducerPath]: orderApi.reducer,

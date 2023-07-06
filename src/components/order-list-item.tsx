@@ -3,8 +3,65 @@ import {
 } from '@mui/material';
 import { IOrderItem } from '@/interfaces/order-interface';
 
-export default function OrderListItem(props: {order: IOrderItem[]}) {
-  const { order } = props;
+export default function OrderListItem(props: {order: IOrderItem[], index: number}) {
+  const { order, index } = props;
+  // Манипуляции для динамического получения даты
+  const date = new Date(`${order[0].createdAt}`);
+  const getYear = date.getFullYear();
+  let getDate = String(date.getDate());
+  if (getDate.length === 1) {
+    getDate = `0${getDate}`;
+  }
+  let getMonth = String(date.getMonth() + 1);
+  if (getMonth.length === 1) {
+    getMonth = `0${getMonth}`;
+  }
+  let exactMonth = 'января';
+  switch (getMonth) {
+    case '01':
+      exactMonth = 'января';
+      break;
+    case '02':
+      exactMonth = 'февраля';
+      break;
+    case '03':
+      exactMonth = 'марта';
+      break;
+    case '04':
+      exactMonth = 'апреля';
+      break;
+    case '05':
+      exactMonth = 'мая';
+      break;
+    case '06':
+      exactMonth = 'июня';
+      break;
+    case '07':
+      exactMonth = 'июля';
+      break;
+    case '08':
+      exactMonth = 'августа';
+      break;
+    case '09':
+      exactMonth = 'сентября';
+      break;
+    case '10':
+      exactMonth = 'октября';
+      break;
+    case '11':
+      exactMonth = 'ноября';
+      break;
+    case '12':
+      exactMonth = 'декабря';
+      break;
+    default:
+      exactMonth = 'января';
+  }
+  // Манипуляции для динамического получения суммы заказа
+  let totalCost = 0;
+  order.forEach((good) => {
+    totalCost += good.quantity * good.product.price;
+  });
   return (
     <Card
       elevation={0}
@@ -20,7 +77,7 @@ export default function OrderListItem(props: {order: IOrderItem[]}) {
               Заказ
             </Typography>
             <Typography fontSize={20} fontWeight="bold">
-              №344300
+              {`№${index + 1}`}
             </Typography>
           </Stack>
           <Stack direction="row" gap={1} alignItems="center">
@@ -51,7 +108,7 @@ export default function OrderListItem(props: {order: IOrderItem[]}) {
             fontWeight="bold"
             textAlign="left"
           >
-            1 января 2023 г
+            {`Оформлено ${getDate} ${exactMonth} ${getYear} г.`}
           </Typography>
           <Typography
             color="text.secondary"
@@ -64,7 +121,7 @@ export default function OrderListItem(props: {order: IOrderItem[]}) {
             fontWeight="bold"
             textAlign="left"
           >
-            8 324 ₽
+            {`${totalCost} ₽`}
           </Typography>
         </Box>
       </Stack>

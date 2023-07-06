@@ -8,6 +8,7 @@
     "react/jsx-filename-extension": [1, { "extensions": [".tsx", ".jsx"] }],
     "linebreak-style": 0,
     "import/extensions": "off",
-    "react/jsx-props-no-spreading": "off"
+    "react/jsx-props-no-spreading": "off",
+    "prefer-destructuring": ["error", {"array": false}]
   }
 }

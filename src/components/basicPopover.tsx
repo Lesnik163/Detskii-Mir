@@ -14,6 +14,7 @@ import { useAppSelector } from '@/app/redux/hooks';
 import ButtonCounter from '@/components/buttonCounter';
 import { useDispatch } from 'react-redux';
 import { deleteCard, deleteCartList } from '@/app/redux/features/counterSlice';
+// import { pushOrder } from '@/app/redux/features/orderSlice';
 import { cartApi } from '@/app/redux/services/cart-service';
 import { ICartItem, ICartUpd } from '@/interfaces/cart-interfaces';
 import Cart from './cart';
@@ -31,7 +32,6 @@ export default function BasicPopover() {
   const cartList = useAppSelector((state) => state.counterReducer.cartList);
   // Если массив пуст получаем из LocStorage в файле product-details
   useEffect(() => {
-
   }, [cartList]);
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
     setAnchorEl(event.currentTarget);
@@ -39,7 +39,12 @@ export default function BasicPopover() {
   const handleClose = () => {
     setAnchorEl(null);
   };
-
+  //
+  // const orderList = useAppSelector((state) => state.orderReducer.orderList);
+  // useEffect(() => {
+  // }, [orderList]);
+  // console.log(orderList);
+  //
   const open = Boolean(anchorEl);
   const id = open ? 'simple-popover' : undefined;
 
@@ -63,8 +68,9 @@ export default function BasicPopover() {
     setIcon(<DeleteCartOrange />);
     setColor('rgba(237, 44, 25, 0.7)');
   };
-  const [createCart] = cartApi.useUpdateCartMutation();
+  const [updateCart] = cartApi.useUpdateCartMutation();
   const [submitCart] = cartApi.useSubmitCartMutation();
+
   const getAllOrdersAndFinallyUpdate = async () => {
     // Вначале получим массив товаров с количеством товара на заказ != 0
     const arrWithoutZeroQuantityItem = cartList?.filter((item) => item.quantity !== 0);
@@ -72,12 +78,14 @@ export default function BasicPopover() {
       id: item.product.id,
       quantity: item.quantity,
     }));
-    await createCart({
+    await updateCart({
       data: forUpdateArr,
-    } as ICartUpd);
-    await submitCart(arrWithoutZeroQuantityItem as ICartItem[]);
+    } as ICartUpd)
+      .unwrap()
+      .then((data) => submitCart(data as ICartItem[]));
     dispatch(deleteCartList());
   };
+
   return (
     <Box
       sx={{
