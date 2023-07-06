@@ -1,12 +1,12 @@
 import { IProduct } from './product-interface';
 
 export interface IOrderItem {
-  readonly product: IProduct;
   readonly quantity: number;
+  readonly createdAt: string;
+  readonly product: IProduct;
 }
 
 export interface IOrder {
-  readonly number: string;
-  readonly products: IOrderItem[];
-  readonly createdAt: string;
+  readonly meta: { readonly count: number; readonly total: number }
+  readonly data: Array<IOrderItem[]>;
 }

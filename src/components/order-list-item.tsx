@@ -1,9 +1,10 @@
 import {
   Avatar, Box, Card, Stack, Typography,
 } from '@mui/material';
-import orderListFixture from '@/mockData/order-list-mock';
+import { IOrderItem } from '@/interfaces/order-interface';
 
-export default function OrderListItem() {
+export default function OrderListItem(props: {order: IOrderItem[]}) {
+  const { order } = props;
   return (
     <Card
       elevation={0}
@@ -23,12 +24,12 @@ export default function OrderListItem() {
             </Typography>
           </Stack>
           <Stack direction="row" gap={1} alignItems="center">
-            {[1, 2, 3].map((el) => (
+            {order.map((el) => (
               <Avatar
-                key={el}
+                key={Number(el.product.id + Math.round(Math.random() * 100))}
                 variant="rounded"
                 alt="Remy Sharp"
-                src={orderListFixture[0].products[0].product.picture}
+                src={el.product.picture}
               />
             ))}
           </Stack>

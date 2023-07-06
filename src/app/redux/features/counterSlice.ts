@@ -59,6 +59,11 @@ export const counter = createSlice({
       state.cartList = newState;
       localStorage.removeItem(`${action.payload}`);
     },
+    deleteCartList: (state: CounterState) => {
+      // eslint-disable-next-line no-param-reassign
+      state.cartList = [];
+      localStorage.clear();
+    },
   },
 });
 
@@ -67,5 +72,6 @@ export const {
   decrement,
   pushCard,
   deleteCard,
+  deleteCartList,
 } = counter.actions;
 export default counter.reducer;

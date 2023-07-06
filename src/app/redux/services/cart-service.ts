@@ -5,6 +5,7 @@ export const cartApi = createApi({
   reducerPath: 'cartAPI',
   baseQuery: fetchBaseQuery({
     baseUrl: 'https://skillfactory-task.detmir.team/',
+    credentials: 'include',
   }),
   tagTypes: ['Cart'],
   endpoints: (builder) => ({
@@ -13,7 +14,6 @@ export const cartApi = createApi({
         url: 'cart/update',
         method: 'POST',
         body: good,
-        // mode: 'no-cors',
       }),
       invalidatesTags: ['Cart'],
     }),
@@ -24,7 +24,15 @@ export const cartApi = createApi({
       // eslint-disable-next-line no-unused-vars
       providesTags: (result) => ['Cart'],
     }),
+    //
+    submitCart: builder.mutation<ICartItem[], ICartItem[]>({
+      query: () => ({
+        url: 'cart/submit',
+        method: 'POST',
+      }),
+    }),
+    //
   }),
 });
 
-export const { useFetchCartStateQuery, useUpdateCartMutation } = cartApi;
+export const { useFetchCartStateQuery, useUpdateCartMutation, useSubmitCartMutation } = cartApi;

@@ -13,7 +13,9 @@ import Image from 'next/image';
 import { useAppSelector } from '@/app/redux/hooks';
 import ButtonCounter from '@/components/buttonCounter';
 import { useDispatch } from 'react-redux';
-import { deleteCard } from '@/app/redux/features/counterSlice';
+import { deleteCard, deleteCartList } from '@/app/redux/features/counterSlice';
+import { cartApi } from '@/app/redux/services/cart-service';
+import { ICartItem, ICartUpd } from '@/interfaces/cart-interfaces';
 import Cart from './cart';
 import CostLimit from './costLimit';
 import DeleteCart from '../../public/DeleteCart.svg';
@@ -60,6 +62,21 @@ export default function BasicPopover() {
   const changeToDimIcon = () => {
     setIcon(<DeleteCartOrange />);
     setColor('rgba(237, 44, 25, 0.7)');
+  };
+  const [createCart] = cartApi.useUpdateCartMutation();
+  const [submitCart] = cartApi.useSubmitCartMutation();
+  const getAllOrdersAndFinallyUpdate = async () => {
+    // Вначале получим массив товаров с количеством товара на заказ != 0
+    const arrWithoutZeroQuantityItem = cartList?.filter((item) => item.quantity !== 0);
+    const forUpdateArr = arrWithoutZeroQuantityItem?.map((item) => ({
+      id: item.product.id,
+      quantity: item.quantity,
+    }));
+    await createCart({
+      data: forUpdateArr,
+    } as ICartUpd);
+    await submitCart(arrWithoutZeroQuantityItem as ICartItem[]);
+    dispatch(deleteCartList());
   };
   return (
     <Box
@@ -142,6 +159,7 @@ export default function BasicPopover() {
               <Button
                 disabled={fullCostLimit}
                 variant="contained"
+                onClick={getAllOrdersAndFinallyUpdate}
                 sx={{
                   borderRadius: '12px', fontSize: '16px', fontWeight: 'bold', background: '#0073E6', color: 'white', mb: '14px',
                 }}
