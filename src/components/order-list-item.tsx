@@ -83,7 +83,8 @@ export default function OrderListItem(props: {order: IOrderItem[], index: number
           <Stack direction="row" gap={1} alignItems="center">
             {order.map((el) => (
               <Avatar
-                key={Number(el.product.id + Math.round(Math.random() * 100))}
+                key={Math.round(Math.random() * 100000 - Number(el.product.id))
+                  + Math.round(Math.random() * 10 * 40)}
                 variant="rounded"
                 alt="Remy Sharp"
                 src={el.product.picture}

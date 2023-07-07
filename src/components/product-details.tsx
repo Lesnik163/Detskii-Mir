@@ -12,11 +12,14 @@ import StarEmptyIcon from '../../public/StarEmptyIcon.svg';
 import ReturnIcon from '../../public/Return.svg';
 import BeforeOrderButtonCounter from './beforeOrderButtonCounter';
 import Limit from './limit';
+import CostLimit from './costLimit';
 
 export default function ProductDetails(
   { product }: { product: IProduct },
 ) {
   const [productLimit, setProductLimit] = useState(false);
+  const [costLimit, setCostLimit] = useState(false);
+  const [disabled, setDisabled] = useState(false);
   const [isAddedToCart, setAddedToCart] = useState(false);
   const params = useParams();
   const dispatch = useAppDispatch();
@@ -34,7 +37,23 @@ export default function ProductDetails(
       setProductLimit(false);
     }
   }, [quantity]);
-
+  // Проверка , что сумма заказа не более 20000р
+  useEffect(() => {
+    if (quantity * product.price >= 20000) {
+      setCostLimit(true);
+    }
+    if (quantity * product.price <= 20000) {
+      setCostLimit(false);
+    }
+  }, [product.price, quantity]);
+  // Блокировщик кнопки оформления заказа
+  useEffect(() => {
+    if (productLimit || costLimit) {
+      setDisabled(true);
+    } else {
+      setDisabled(false);
+    }
+  }, [productLimit, costLimit]);
   // Процедура напонения store состоянием из LocalStorage, если store пуст
   const cartList = useAppSelector((state) => state.counterReducer.cartList);
   useEffect(() => {
@@ -111,11 +130,13 @@ export default function ProductDetails(
               sx={{
                 bgcolor: 'warning.main', color: 'white', width: '200px', borderRadius: '12px',
               }}
+              disabled={disabled}
             >
               Оформить заказ
             </Button>
           </Box>
           {productLimit && (<Limit />)}
+          {costLimit && (<CostLimit />)}
         </>
         )}
         <Stack direction="row" mt={2} mb={1} gap={1} alignItems="center">
