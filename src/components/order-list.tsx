@@ -8,7 +8,7 @@ import OrderListItem from './order-list-item';
 export default function OrderList() {
   const page = 1;
   const limit = 30;
-  const { data } = useGetOrdersQuery({ page, limit });
+  const { data, isLoading, error } = useGetOrdersQuery({ page, limit });
   // console.log('ответ после запроса на товар', data);
   return (
     <Box width={1}>
@@ -19,7 +19,9 @@ export default function OrderList() {
         px="15%"
         gap={3}
       >
-        {data?.data?.map((order: IOrderItem[], index) => (
+        {isLoading && <div>wait...</div>}
+        {error && <h1>Some has gone wrong...</h1>}
+        {data && data?.data?.map((order: IOrderItem[], index) => (
           <OrderListItem key={Math.round(Math.random() * 1000)} order={order} index={index} />
         ))}
       </Stack>

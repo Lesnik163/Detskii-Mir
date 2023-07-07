@@ -7,15 +7,11 @@ import Providers from '../redux/provider';
 
 export default function ProductLayout({ children }: IChildren) {
   return (
-    <html lang="en">
-      <body>
-        <Providers>
-          <ThemeProvider>
-            <Header />
-            {children}
-          </ThemeProvider>
-        </Providers>
-      </body>
-    </html>
+    <Providers>
+      <ThemeProvider>
+        <Header />
+        {children}
+      </ThemeProvider>
+    </Providers>
   );
 }

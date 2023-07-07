@@ -22,7 +22,6 @@ export default function HeaderTabs() {
       setValue(newValue);
     }
   };
-
   return (
     <Box
       // position="fixed"
