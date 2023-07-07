@@ -30,7 +30,7 @@ export default function OrderList() {
       </Box>
     );
   }
-  if (data && data?.data?.length === 0) {
+  if (data?.data?.length === 0) {
     return (
       <Box
         mx="auto"
