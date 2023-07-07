@@ -32,7 +32,7 @@ export default function OrderList() {
       </Box>
     );
   }
-  if (data?.data?.length === 0) {
+  if (orderList?.length === 0) {
     return (
       <Box
         mx="auto"
@@ -43,7 +43,7 @@ export default function OrderList() {
       </Box>
     );
   }
-  if (data && data?.data?.length !== 0) {
+  if (data && orderList?.length !== 0) {
     return (
       <InfiniteScroll
         next={loadMore}
@@ -73,7 +73,7 @@ export default function OrderList() {
             {data && orderList?.map((order: IOrderItem[], index) => (
               <OrderListItem
                 key={Math.round(Math.random() * 10000)
-                 + Math.round(Math.random() * 400)}
+                + Math.round(Math.random() * 400)}
                 order={order}
                 index={index}
               />
@@ -85,5 +85,8 @@ export default function OrderList() {
         </Box>
       </InfiniteScroll>
     );
+  }
+  if (!orderList) {
+    return null;
   }
 }
