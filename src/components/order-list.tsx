@@ -1,3 +1,5 @@
+'use client';
+
 // import orderListMock from '@/mockData/order-list-mock'; // Моковые данные
 import { useCallback, useState } from 'react';
 import { Box, Stack } from '@mui/material';
