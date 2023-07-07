@@ -6,7 +6,9 @@ import { IProduct } from '@/interfaces/product-interface';
 import { useParams } from 'next/navigation';
 import { useAppDispatch, useAppSelector } from '@/app/redux/hooks';
 import { nullify } from '@/app/redux/features/beforeOrderCounterSlice';
-import { pushCard } from '@/app/redux/features/counterSlice';
+import { deleteCartList, pushCard } from '@/app/redux/features/counterSlice';
+import { cartApi } from '@/app/redux/services/cart-service';
+import { ICartItem, ICartUpd } from '@/interfaces/cart-interfaces';
 import StarIcon from '../../public/StarIcon.svg';
 import StarEmptyIcon from '../../public/StarEmptyIcon.svg';
 import ReturnIcon from '../../public/Return.svg';
@@ -69,7 +71,25 @@ export default function ProductDetails(
       }
     }
   }, [cartList, dispatch]);
-
+  //
+  const [updateCart] = cartApi.useUpdateCartMutation();
+  const [submitCart] = cartApi.useSubmitCartMutation();
+  const getAllOrdersAndFinallyUpdate = async () => {
+    // Вначале получим массив товаров с количеством товара на заказ != 0
+    const arrWithoutZeroQuantityItem = cartList?.filter((item) => item.quantity !== 0);
+    const forUpdateArr = arrWithoutZeroQuantityItem?.map((item) => ({
+      id: item.product.id,
+      quantity: item.quantity,
+    }));
+    await updateCart({
+      data: forUpdateArr,
+    } as ICartUpd)
+      .unwrap()
+      .then((data) => submitCart(data as ICartItem[]));
+    // .then((data) => console.log(data));
+    dispatch(deleteCartList());
+  };
+  //
   return (
     <Paper
       elevation={0}
@@ -130,6 +150,7 @@ export default function ProductDetails(
             <Button
               variant="contained"
               size="large"
+              onClick={getAllOrdersAndFinallyUpdate}
               sx={{
                 bgcolor: 'warning.main', color: 'white', width: '200px', borderRadius: '12px',
               }}
