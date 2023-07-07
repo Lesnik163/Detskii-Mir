@@ -83,6 +83,7 @@ export default function BasicPopover() {
     } as ICartUpd)
       .unwrap()
       .then((data) => submitCart(data as ICartItem[]));
+    // .then((data) => console.log(data));
     dispatch(deleteCartList());
   };
 

@@ -15,11 +15,11 @@ export const orderApi = createApi({
         url: 'orders',
         params,
       }),
-      // serializeQueryArgs: ({ endpointName }) => endpointName,
-      // merge(currentCacheData, responseData) {
-      //   currentCacheData.data.push(...responseData.data);
-      // },
-      // forceRefetch: ({ currentArg, previousArg }) => currentArg !== previousArg,
+      serializeQueryArgs: ({ endpointName }) => endpointName,
+      merge(currentCacheData, responseData) {
+        currentCacheData.data.push(...responseData.data);
+      },
+      forceRefetch: ({ currentArg, previousArg }) => currentArg !== previousArg,
       // Закомментированный код выше для infinityScroll
     }),
   }),
