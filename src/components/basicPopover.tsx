@@ -13,7 +13,7 @@ import Image from 'next/image';
 import { useAppSelector } from '@/app/redux/hooks';
 import ButtonCounter from '@/components/buttonCounter';
 import { useDispatch } from 'react-redux';
-import { deleteCard, deleteCartList } from '@/app/redux/features/counterSlice';
+import { deleteCard, deleteCartList, blockOrder } from '@/app/redux/features/counterSlice';
 // import { pushOrder } from '@/app/redux/features/orderSlice';
 import { cartApi } from '@/app/redux/services/cart-service';
 import { ICartItem, ICartUpd } from '@/interfaces/cart-interfaces';
@@ -51,14 +51,16 @@ export default function BasicPopover() {
   const fullCost = cartList?.length !== 0
     ? cartList?.map((item) => item.product.price * item.quantity)
       .reduce((accumulator, currValue) => accumulator + currValue) : ' ';
-  // Проверка на общую стоимость не более 100 т.р.
+  // Проверка на общую стоимость не более 20 т.р.
   useEffect(() => {
     if (typeof fullCost === 'number' && fullCost >= 20000) {
       setFullCostLimit(true);
+      dispatch(blockOrder(true));
     } else {
       setFullCostLimit(false);
+      dispatch(blockOrder(false));
     }
-  }, [fullCost]);
+  }, [fullCost, dispatch]);
   // Выбор цветов и иконок в взависимости от количества 0 или до 10шт
   const changeToBrightIcon = () => {
     setIcon(<DeleteCart />);

@@ -4,11 +4,13 @@ import { createSlice } from '@reduxjs/toolkit';
 
 type CounterState = {
   cartList: ICartItem[] | null,
+  blocked: boolean
 }
 
 const initialState = {
   // cartList: cartsMock, //Для моковых данных
   cartList: [],
+  blocked: false,
 } as CounterState;
 export const counter = createSlice({
   name: 'counter',
@@ -64,6 +66,10 @@ export const counter = createSlice({
       state.cartList = [];
       localStorage.clear();
     },
+    blockOrder: (state: CounterState, action) => {
+      // eslint-disable-next-line no-param-reassign
+      state.blocked = action.payload;
+    },
   },
 });
 
@@ -73,5 +79,6 @@ export const {
   pushCard,
   deleteCard,
   deleteCartList,
+  blockOrder,
 } = counter.actions;
 export default counter.reducer;

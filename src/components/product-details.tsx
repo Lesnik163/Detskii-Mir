@@ -13,6 +13,7 @@ import ReturnIcon from '../../public/Return.svg';
 import BeforeOrderButtonCounter from './beforeOrderButtonCounter';
 import Limit from './limit';
 import CostLimit from './costLimit';
+import CartContentLimiter from './byCartContentLimit';
 
 export default function ProductDetails(
   { product }: { product: IProduct },
@@ -23,6 +24,8 @@ export default function ProductDetails(
   const [isAddedToCart, setAddedToCart] = useState(false);
   const params = useParams();
   const dispatch = useAppDispatch();
+  // Получаем из хранилища состояние корзины по блокировке заказа по цене и количеству
+  const blocked = useAppSelector((state) => state.counterReducer.blocked);
 
   const changeBtn = () => {
     setAddedToCart(!isAddedToCart);
@@ -130,13 +133,14 @@ export default function ProductDetails(
               sx={{
                 bgcolor: 'warning.main', color: 'white', width: '200px', borderRadius: '12px',
               }}
-              disabled={disabled}
+              disabled={disabled || blocked}
             >
               Оформить заказ
             </Button>
           </Box>
           {productLimit && (<Limit />)}
           {costLimit && (<CostLimit />)}
+          {blocked && (<CartContentLimiter />)}
         </>
         )}
         <Stack direction="row" mt={2} mb={1} gap={1} alignItems="center">
