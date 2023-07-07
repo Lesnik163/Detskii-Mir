@@ -33,6 +33,9 @@ export default function OrderList() {
     );
   }
   if (orderList?.length === 0) {
+    if (!orderList) {
+      return null;
+    }
     return (
       <Box
         mx="auto"
@@ -43,50 +46,43 @@ export default function OrderList() {
       </Box>
     );
   }
-  if (data && orderList?.length !== 0) {
-    return (
-      <InfiniteScroll
-        next={loadMore}
-        hasMore={!(data?.meta?.count === 0)}
-        loader={(
-          <Box
-            mx="auto"
-            width="300px"
-            color="warning.main"
-            textAlign="center"
-            py="15px"
-            fontSize="20px"
-          >
-            Больше заказов нет!
-          </Box>
-)}
-        dataLength={data?.data?.length as number}
-      >
-        <Box width={1}>
-          <Stack
-            direction="column"
-            justifyContent="center"
-            width={1}
-            px="15%"
-            gap={3}
-          >
-            {data && orderList?.map((order: IOrderItem[], index) => (
-              <OrderListItem
-                key={Math.round(Math.random() * 10000)
-                + Math.round(Math.random() * 400)}
-                order={order}
-                index={index}
-              />
-            ))}
-          </Stack>
-          {/* <Box justifyContent="center" display="flex">
-            <Pagination />
-          </Box> */}
+  if (!data && orderList?.length === 0) { return null; }
+  return (
+    <InfiniteScroll
+      next={loadMore}
+      hasMore={!(data?.meta?.count === 0)}
+      loader={(
+        <Box
+          mx="auto"
+          width="300px"
+          color="warning.main"
+          textAlign="center"
+          py="15px"
+          fontSize="20px"
+        >
+          Больше заказов нет!
         </Box>
-      </InfiniteScroll>
-    );
-  }
-  if (!orderList) {
-    return null;
-  }
+)}
+      dataLength={data?.data?.length as number}
+    >
+      <Box width={1}>
+        <Stack
+          direction="column"
+          justifyContent="center"
+          width={1}
+          px="15%"
+          gap={3}
+        >
+          {data && orderList?.map((order: IOrderItem[], index) => (
+            <OrderListItem
+              key={Math.round(Math.random() * 10000)
+                + Math.round(Math.random() * 400)}
+              order={order}
+              index={index}
+            />
+          ))}
+        </Stack>
+      </Box>
+    </InfiniteScroll>
+  );
 }
