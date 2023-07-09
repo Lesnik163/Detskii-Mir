@@ -4,6 +4,17 @@ import { Nunito } from 'next/font/google';
 import { createTheme } from '@mui/material/styles';
 import { blue } from '@mui/material/colors';
 
+declare module '@mui/material/styles' {
+  // interface BreakpointOverrides {
+  //   values: {
+  //     mobile: true; // adds the `mobile` breakpoint
+  //     tablet: true;
+  //     laptop: true;
+  //     desktop: true;
+
+  //   }
+  // }
+}
 export const nunito = Nunito({
   weight: ['400', '700', '800'],
   subsets: ['latin'],
@@ -51,6 +62,14 @@ const theme = createTheme({
       },
     },
   },
+  // breakpoints: {
+  //   values: {
+  //     mobile: 0,
+  //     tablet: 640,
+  //     laptop: 1024,
+  //     desktop: 1200,
+  //   } as BreakpointOverrides,
+  // },
 });
 
 export default theme;

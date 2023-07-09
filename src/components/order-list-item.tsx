@@ -2,6 +2,7 @@ import {
   Avatar, Box, Card, Stack, Typography,
 } from '@mui/material';
 import { IOrderItem } from '@/interfaces/order-interface';
+import theme from '@/themes/light-theme';
 
 export default function OrderListItem(props: {order: IOrderItem[], index: number}) {
   const { order, index } = props;
@@ -70,9 +71,24 @@ export default function OrderListItem(props: {order: IOrderItem[], index: number
         p: 3,
       }}
     >
-      <Stack direction="row" justifyContent="space-between">
-        <Box display="flex">
-          <Stack direction="column" mr={2}>
+      <Stack
+        direction="row"
+        justifyContent="space-between"
+      >
+        <Box
+          display="flex"
+          sx={{
+            [theme.breakpoints.down('lg')]: {
+              // minWidth: '380px',
+              width: '380px',
+              overflow: 'scroll',
+            },
+          }}
+        >
+          <Stack
+            direction="column"
+            mr={2}
+          >
             <Typography color="text.secondary" fontWeight="bold">
               Заказ
             </Typography>
@@ -83,6 +99,11 @@ export default function OrderListItem(props: {order: IOrderItem[], index: number
           <Stack direction="row" gap={1} alignItems="center">
             {order.map((el) => (
               <Avatar
+                sx={{
+                  '& .MuiAvatar-img:hover': {
+                    transform: 'scale(2)',
+                  },
+                }}
                 key={Math.round(Math.random() * 100000 - Number(el.product.id))
                   + Math.round(Math.random() * 10 * 40)}
                 variant="rounded"
@@ -97,6 +118,11 @@ export default function OrderListItem(props: {order: IOrderItem[], index: number
           gridTemplateRows="repeat(2, 1fr)"
           gridTemplateColumns="repeat(2, 1fr)"
           columnGap={1}
+          sx={{
+            [theme.breakpoints.down('lg')]: {
+              display: 'none',
+            },
+          }}
         >
           <Typography
             color="text.secondary"

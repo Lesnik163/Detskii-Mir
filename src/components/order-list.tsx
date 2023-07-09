@@ -1,19 +1,27 @@
 'use client';
 
 // import orderListMock from '@/mockData/order-list-mock'; // Моковые данные
-import { useCallback, useState } from 'react';
+import { useCallback, useState, useEffect } from 'react';
 import { Box, Stack } from '@mui/material';
 import InfiniteScroll from 'react-infinite-scroll-component';
 import { IOrderItem } from '@/interfaces/order-interface';
-import { useGetOrdersQuery } from '@/app/redux/services/order-service';
+import { useGetOrdersQuery, orderApi } from '@/app/redux/services/order-service';
+import { useDispatch } from 'react-redux';
+import theme from '@/themes/light-theme';
 import Variants from './isLoadingForOrders';
 import OrderListItem from './order-list-item';
 
+// eslint-disable-next-line prefer-arrow-callback
 export default function OrderList() {
   const [page, setPage] = useState(1);
   const limit = 8;
+  const dispatch = useDispatch();
+  useEffect(() => {
+    dispatch(orderApi.util.resetApiState());
+  }, [dispatch]);
   const { data, isLoading, error } = useGetOrdersQuery({ page, limit });
   const orderList = data?.data;
+
   const loadMore = useCallback(() => {
     setPage(page + 1);
   }, [page]);
@@ -72,6 +80,13 @@ export default function OrderList() {
           width={1}
           px="15%"
           gap={3}
+          sx={{
+            [theme.breakpoints.down('lg')]: {
+              flexWrap: 'wrap',
+              flexDirection: 'row',
+              px: '2%',
+            },
+          }}
         >
           {data && orderList?.map((order: IOrderItem[], index) => (
             <OrderListItem

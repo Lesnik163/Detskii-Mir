@@ -10,6 +10,7 @@ import Header from '@/components/header';
 import { IProduct } from '@/interfaces/product-interface';
 import Variants from '@/components/isLoadingForCard';
 import { useDispatch } from 'react-redux';
+// import theme from '@/themes/light-theme';
 import { nullify } from '@/app/redux/features/beforeOrderCounterSlice';
 import ProductDetails from '../../../components/product-details';
 import ArrowLeftIcon from '../../../../public/Arrow-left.svg';
@@ -56,7 +57,13 @@ export default function ProductPage() {
         <Button
           variant="contained"
           sx={{
-            backgroundColor: 'warning.main', color: 'white', mt: '18%', height: '40px',
+            backgroundColor: 'warning.main',
+            color: 'white',
+            mt: '18%',
+            height: '40px',
+            // [theme.breakpoints.unit:'1400px']: {
+            //   display: 'none',
+            // },
           }}
           onClick={routePreviousAndNullify}
         >

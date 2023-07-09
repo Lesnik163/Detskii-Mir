@@ -39,12 +39,7 @@ export default function BasicPopover() {
   const handleClose = () => {
     setAnchorEl(null);
   };
-  //
-  // const orderList = useAppSelector((state) => state.orderReducer.orderList);
-  // useEffect(() => {
-  // }, [orderList]);
-  // console.log(orderList);
-  //
+
   const open = Boolean(anchorEl);
   const id = open ? 'simple-popover' : undefined;
 
