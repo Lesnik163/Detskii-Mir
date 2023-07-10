@@ -10,7 +10,7 @@ import Header from '@/components/header';
 import { IProduct } from '@/interfaces/product-interface';
 import Variants from '@/components/isLoadingForCard';
 import { useDispatch } from 'react-redux';
-// import theme from '@/themes/light-theme';
+import theme from '@/themes/light-theme';
 import { nullify } from '@/app/redux/features/beforeOrderCounterSlice';
 import ProductDetails from '../../../components/product-details';
 import ArrowLeftIcon from '../../../../public/Arrow-left.svg';
@@ -61,9 +61,9 @@ export default function ProductPage() {
             color: 'white',
             mt: '18%',
             height: '40px',
-            // [theme.breakpoints.unit:'1400px']: {
-            //   display: 'none',
-            // },
+            [theme.breakpoints.down(1400)]: {
+              display: 'none',
+            },
           }}
           onClick={routePreviousAndNullify}
         >
@@ -90,6 +90,40 @@ export default function ProductPage() {
           {data && (
           <>
             <ProductDetails product={data} />
+            <Stack display="flex" justifyContent="center" flexDirection="row" gap="20px">
+              <Button
+                variant="contained"
+                sx={{
+                  backgroundColor: 'warning.main',
+                  color: 'white',
+                  mt: '20px',
+                  width: '150px',
+                  height: '40px',
+                  [theme.breakpoints.up(1400)]: {
+                    display: 'none',
+                  },
+                }}
+                onClick={routePreviousAndNullify}
+              >
+                Предыдущий
+              </Button>
+              <Button
+                variant="contained"
+                sx={{
+                  backgroundColor: 'warning.main',
+                  color: 'white',
+                  mt: '20px',
+                  width: '150px',
+                  height: '40px',
+                  [theme.breakpoints.up(1400)]: {
+                    display: 'none',
+                  },
+                }}
+                onClick={routeNextAndNullify}
+              >
+                следующий
+              </Button>
+            </Stack>
             <ProductDescription description={data.description} />
           </>
           )}
@@ -97,7 +131,13 @@ export default function ProductPage() {
         <Button
           variant="contained"
           sx={{
-            backgroundColor: 'warning.main', color: 'white', mt: '18%', height: '40px',
+            backgroundColor: 'warning.main',
+            color: 'white',
+            mt: '18%',
+            height: '40px',
+            [theme.breakpoints.down(1400)]: {
+              display: 'none',
+            },
           }}
           onClick={routeNextAndNullify}
         >

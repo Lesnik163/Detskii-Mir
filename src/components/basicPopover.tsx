@@ -160,7 +160,6 @@ export default function BasicPopover() {
                   {fullCost}
               &nbsp;₽
                 </Typography>
-                {}
               </Stack>
               <Button
                 disabled={fullCostLimit}

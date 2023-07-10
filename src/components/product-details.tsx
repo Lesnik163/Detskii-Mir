@@ -9,6 +9,7 @@ import { nullify } from '@/app/redux/features/beforeOrderCounterSlice';
 import { deleteCartList, pushCard } from '@/app/redux/features/counterSlice';
 import { cartApi } from '@/app/redux/services/cart-service';
 import { ICartItem, ICartUpd } from '@/interfaces/cart-interfaces';
+import theme from '@/themes/light-theme';
 import StarIcon from '../../public/StarIcon.svg';
 import StarEmptyIcon from '../../public/StarEmptyIcon.svg';
 import ReturnIcon from '../../public/Return.svg';
@@ -86,7 +87,6 @@ export default function ProductDetails(
     } as ICartUpd)
       .unwrap()
       .then((data) => submitCart(data as ICartItem[]));
-    // .then((data) => console.log(data));
     dispatch(deleteCartList());
   };
   //
@@ -98,18 +98,43 @@ export default function ProductDetails(
         p: 2,
         columnCount: 2,
         borderRadius: '16px',
+        [theme.breakpoints.down(1400)]: {
+          display: 'flex',
+          flexDirection: 'column',
+          mt: '40px',
+        },
       }}
     >
-      <Box>
+      <Box
+        sx={{
+          [theme.breakpoints.down(1400)]: {
+            alignSelf: 'center',
+            minWidth: '220px',
+          },
+        }}
+      >
         <CardMedia
           component="img"
           image={product.picture}
           height="100%"
           width="100%"
           alt="product"
+          sx={{
+            [theme.breakpoints.down(700)]: {
+              transform: 'scale(0.5)',
+            },
+          }}
         />
       </Box>
-      <Stack width={370}>
+      <Stack
+        width={370}
+        sx={{
+          [theme.breakpoints.down(700)]: {
+            alignSelf: 'center',
+            width: '220px',
+          },
+        }}
+      >
         <Typography
           fontSize={20}
           fontWeight="bold"
