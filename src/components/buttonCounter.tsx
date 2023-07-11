@@ -74,7 +74,7 @@ export default function ButtonCounter(props: ButtonCounterProps) {
           borderRadius: '12px',
           mx: 6,
           [theme.breakpoints.down(600)]: {
-            mx: 5,
+            mx: 3,
           },
           '& .MuiButton-root': {
             color: 'warning.main',
