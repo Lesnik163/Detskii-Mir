@@ -79,9 +79,8 @@ export default function OrderListItem(props: {order: IOrderItem[], index: number
           display="flex"
           sx={{
             [theme.breakpoints.down('lg')]: {
-              // minWidth: '380px',
               width: '380px',
-              overflow: 'scroll',
+              overflow: 'hidden',
             },
           }}
         >
@@ -89,10 +88,26 @@ export default function OrderListItem(props: {order: IOrderItem[], index: number
             direction="column"
             mr={2}
           >
-            <Typography color="text.secondary" fontWeight="bold">
+            <Typography
+              color="text.secondary"
+              fontWeight="bold"
+              sx={{
+                [theme.breakpoints.down(700)]: {
+                  display: 'none',
+                },
+              }}
+            >
               Заказ
             </Typography>
-            <Typography fontSize={20} fontWeight="bold">
+            <Typography
+              fontSize={20}
+              fontWeight="bold"
+              sx={{
+                [theme.breakpoints.down(700)]: {
+                  display: 'none',
+                },
+              }}
+            >
               {`№${index + 1}`}
             </Typography>
           </Stack>
@@ -118,11 +133,6 @@ export default function OrderListItem(props: {order: IOrderItem[], index: number
           gridTemplateRows="repeat(2, 1fr)"
           gridTemplateColumns="repeat(2, 1fr)"
           columnGap={1}
-          sx={{
-            [theme.breakpoints.down('lg')]: {
-              display: 'none',
-            },
-          }}
         >
           <Typography
             color="text.secondary"
@@ -134,8 +144,13 @@ export default function OrderListItem(props: {order: IOrderItem[], index: number
           <Typography
             fontWeight="bold"
             textAlign="left"
+            sx={{
+              [theme.breakpoints.down(700)]: {
+                width: '125px',
+              },
+            }}
           >
-            {`Оформлено ${getDate} ${exactMonth} ${getYear} г.`}
+            {`${getDate} ${exactMonth} ${getYear} г.`}
           </Typography>
           <Typography
             color="text.secondary"

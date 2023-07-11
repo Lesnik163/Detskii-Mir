@@ -35,7 +35,7 @@ export default function OrderList() {
         width="500px"
         color="red"
       >
-        Корзина пуста. Необходимо оформить хотя бы один заказ
+        Что-то пошло не так. Проверьте подключение к интернету!
 
       </Box>
     );
@@ -90,7 +90,7 @@ export default function OrderList() {
         >
           {data && orderList?.map((order: IOrderItem[], index) => (
             <OrderListItem
-              key={Math.round(Math.random() * 10000)
+              key={Math.round(Math.random() * 10000 + 7 * 12)
                 + Math.round(Math.random() * 400)}
               order={order}
               index={index}

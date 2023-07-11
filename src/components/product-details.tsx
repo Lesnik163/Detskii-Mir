@@ -168,7 +168,16 @@ export default function ProductDetails(
         )}
         {isAddedToCart && (
         <>
-          <Box display="flex" gap={1} width={360}>
+          <Box
+            sx={{
+              [theme.breakpoints.down(700)]: {
+                flexDirection: 'column',
+              },
+            }}
+            display="flex"
+            gap={1}
+            width={360}
+          >
             <Box>
               <BeforeOrderButtonCounter id={params.id} />
             </Box>

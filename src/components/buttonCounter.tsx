@@ -4,6 +4,7 @@ import ButtonGroup from '@mui/material/ButtonGroup';
 import { Box } from '@mui/material';
 import { useAppDispatch, useAppSelector } from '@/app/redux/hooks';
 import { increment, decrement } from '@/app/redux/features/counterSlice';
+import theme from '@/themes/light-theme';
 import { ICartItem } from '@/interfaces/cart-interfaces';
 import Limit from './limit';
 import CostLimit from './costLimit';
@@ -72,6 +73,9 @@ export default function ButtonCounter(props: ButtonCounterProps) {
         sx={{
           borderRadius: '12px',
           mx: 6,
+          [theme.breakpoints.down(600)]: {
+            mx: 5,
+          },
           '& .MuiButton-root': {
             color: 'warning.main',
             height: '52px',

@@ -15,6 +15,7 @@ import ButtonCounter from '@/components/buttonCounter';
 import { useDispatch } from 'react-redux';
 import { deleteCard, deleteCartList, blockOrder } from '@/app/redux/features/counterSlice';
 // import { pushOrder } from '@/app/redux/features/orderSlice';
+import theme from '@/themes/light-theme';
 import { cartApi } from '@/app/redux/services/cart-service';
 import { ICartItem, ICartUpd } from '@/interfaces/cart-interfaces';
 import Cart from './cart';
@@ -27,6 +28,7 @@ export default function BasicPopover() {
   const [anchorEl, setAnchorEl] = React.useState<HTMLButtonElement | null>(null);
   const [icon, setIcon] = useState(<DeleteCartOrange />);
   const [color, setColor] = useState('rgba(237, 44, 25, 1)');
+  const [cartNaming, setCartNaming] = useState('Корзина пуста. Необходимо выбрать товар!');
   const dispatch = useDispatch();
   // Получаем массив из counterSlice
   const cartList = useAppSelector((state) => state.counterReducer.cartList);
@@ -82,6 +84,7 @@ export default function BasicPopover() {
       .then((data) => submitCart(data as ICartItem[]));
     // .then((data) => console.log(data));
     dispatch(deleteCartList());
+    setCartNaming('Заказ успешно выполнен. Заказывайте ещё!');
   };
 
   return (
@@ -125,29 +128,41 @@ export default function BasicPopover() {
                     </ListItemAvatar>
                     <ListItemText
                       primary={order.product.title}
-                      sx={{ overflow: 'hidden', height: '50px', width: '20px' }}
+                      sx={{
+                        overflow: 'hidden',
+                        height: '50px',
+                        width: '20px',
+                        [theme.breakpoints.down(600)]: {
+                          display: 'none',
+                        },
+                      }}
                     />
                     <ButtonCounter order={order} />
-                    <Typography variant="h5" component="div" fontWeight={800} fontSize={20} width={100} textAlign="center">
-                      { (order.product.price * order.quantity) !== 0
-                        ? (`${order.product.price * order.quantity}₽`)
-                        : (
-                          <Button
-                            startIcon={icon}
-                            variant="text"
-                            onMouseEnter={() => changeToBrightIcon()}
-                            onMouseLeave={() => changeToDimIcon()}
-                            onClick={() => dispatch(deleteCard(order.product.id))}
-                            sx={{
-                              color: { color },
-                              fontWeight: '900',
-                            }}
-                          >
-                            удалить
-                          </Button>
+                    <Box display="flex" flexDirection="column">
+                      <Typography variant="h5" component="div" fontWeight={300} fontSize={12} width={100} textAlign="center">
+                        {`${order.product.price}₽ за шт.`}
+                      </Typography>
+                      <Typography variant="h5" component="div" fontWeight={800} fontSize={20} width={100} textAlign="center">
+                        { (order.product.price * order.quantity) !== 0
+                          ? (`${order.product.price * order.quantity}₽`)
+                          : (
+                            <Button
+                              startIcon={icon}
+                              variant="text"
+                              onMouseEnter={() => changeToBrightIcon()}
+                              onMouseLeave={() => changeToDimIcon()}
+                              onClick={() => dispatch(deleteCard(order.product.id))}
+                              sx={{
+                                color: { color },
+                                fontWeight: '900',
+                              }}
+                            >
+                              удалить
+                            </Button>
 
-                        )}
-                    </Typography>
+                          )}
+                      </Typography>
+                    </Box>
                   </Box>
                   <Divider sx={{ mx: 2 }} />
                 </React.Fragment>
@@ -183,7 +198,7 @@ export default function BasicPopover() {
               py="8px"
               fontSize="17px"
             >
-              Корзина пуста. Необходимо выбрать товар!
+              {cartNaming}
             </Box>
           )}
       </Popover>

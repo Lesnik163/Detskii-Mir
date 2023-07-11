@@ -62,7 +62,6 @@ export default function BeforeOrderButtonCounter({ id }:{id:string}) {
       aria-label="small button group"
       sx={{
         borderRadius: '12px',
-        mr: '2px',
         '& .MuiButton-root': {
           color: 'warning.main',
           height: '52px',
@@ -83,9 +82,6 @@ export default function BeforeOrderButtonCounter({ id }:{id:string}) {
           fontSize: '16px',
           color: 'black',
           border: 'none',
-        },
-        '& .MuiButton-root[tab]': {
-          background: 'red',
         },
       }}
     >
