@@ -70,7 +70,16 @@ export default function ProductPage() {
           Предыдущий
         </Button>
 
-        <Stack direction="column" gap={2} width="57%">
+        <Stack
+          direction="column"
+          gap={2}
+          width="57%"
+          sx={{
+            [theme.breakpoints.down(700)]: {
+              width: '80%',
+            },
+          }}
+        >
           <Button
             startIcon={<ArrowLeftIcon />}
             onClick={() => router.back()}
